@@ -54,8 +54,8 @@ class ShapeNetDataset(Dataset):
             image = self.transform(image)
 
         # Load ground truth voxel data
-        voxel_data = scipy.io.loadmat(voxel_file)['voxel']
-
+        voxel_data = scipy.io.loadmat(voxel_file)#['voxel']
+        print(f"type:{voxel_data}")
         return image, torch.from_numpy(voxel_data).float()
 
 curr_dir = os.getcwd()
