@@ -75,7 +75,7 @@ print('Hi just checking something ')
 img_sample, voxel_sample = train_dataset[0]
 
 # Check shape of the image
-print(type(img_sample)
+print(type(img_sample))
 print("Image shape:", img_sample.shape)
 
 # Check shape of the voxel data (AutoCAD model)
