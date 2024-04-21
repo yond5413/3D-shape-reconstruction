@@ -6,7 +6,7 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-
+import numpy as np
 class ShapeNetDataset(Dataset):
     def __init__(self, img_dir, voxel_dir, transform=None):
         self.img_dir = img_dir
