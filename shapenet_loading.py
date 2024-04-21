@@ -22,7 +22,6 @@ class ShapeNetDataset(Dataset):
             # Ensure the file is a voxel file (model.mat)
             if voxel_file.endswith('.mat'):
                 voxel_path = os.path.join(self.voxel_dir, voxel_file)
-                
                 # Generate image file paths for the range [000.png - 011.png]
                 for i in range(12):
                     img_file = f"{i:03d}.png"
@@ -31,6 +30,7 @@ class ShapeNetDataset(Dataset):
                     # Check if both the image and voxel files exist
                     if os.path.isfile(img_path) and os.path.isfile(voxel_path):
                         file_list.append((img_path, voxel_path))
+                        print(f"succesfully added: {(img_path, voxel_path)}")
                     else:
                         if not os.path.isfile(img_path):
                             print(f"Failure: Image file {img_path} not found!")
