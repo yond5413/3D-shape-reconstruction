@@ -30,40 +30,15 @@ class ShapeNetDataset(Dataset):
                     img_path = os.path.join(self.img_dir,dir,img_file)
                     if os.path.isfile(img_path) and os.path.isfile(voxel_path):
                         file_list.append((img_path, voxel_path))
-                        print(f"succesfully added: {(img_path, voxel_path)}")
+                        #print(f"succesfully added: {(img_path, voxel_path)}")
                     else:
                         if not os.path.isfile(img_path):
-                            print(f"Failure: Image file {img_path} not found!")
+                            #print(f"Failure: Image file {img_path} not found!")
+                            pass
                         if not os.path.isfile(voxel_path):
-                            print(f"Failure: Voxel file {voxel_path} not found!")
-                            break  # Exit loop if either file is missing'''
-        '''for voxel_file in os.listdir(self.voxel_dir):
-            # Ensure the file is a voxel file (model.mat)
-            if voxel_file.endswith('.mat'):
-                voxel_path = os.path.join(self.voxel_dir, voxel_file)
-                print(voxel_path)
-                # Generate image file paths for the range [000.png - 011.png]
-                for i in range(12):
-                    img_file = f"{i:03d}.png"
-                    img_path = os.path.join(self.imgs_dir, img_file)
-                    
-                    # Check if both the image and voxel files exist
-                    if os.path.isfile(img_path) and os.path.isfile(voxel_path):
-                        file_list.append((img_path, voxel_path))
-                        print(f"succesfully added: {(img_path, voxel_path)}")
-                    else:
-                        if not os.path.isfile(img_path):
-                            print(f"Failure: Image file {img_path} not found!")
-                        if not os.path.isfile(voxel_path):
-                            print(f"Failure: Voxel file {voxel_path} not found!")
-                        break  # Exit loop if either file is missing'''
-
-        '''for img_file in os.listdir(self.img_dir):
-            img_path = os.path.join(self.img_dir, img_file)
-            #print(img_path)
-            voxel_file = os.path.join(self.voxel_dir, img_file.replace('.png', '.mat'))
-            if os.path.isfile(voxel_file):
-                file_list.append((img_path, voxel_file))'''
+                            #print(f"Failure: Voxel file {voxel_path} not found!")
+                            pass
+                        break
         return file_list
 
     def __len__(self):
