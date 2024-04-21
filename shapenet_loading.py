@@ -29,8 +29,9 @@ class ShapeNetDataset(Dataset):
         return len(self.file_list)
 
     def __getitem__(self, idx):
+        print(f"idx:{idx}")
         img_path, voxel_file = self.file_list[idx]
-        
+
         # Load input image
         image = Image.open(img_path).convert("RGB")
         if self.transform:
