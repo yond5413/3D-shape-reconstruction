@@ -73,10 +73,10 @@ val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir)#, transform=transform)
 
 print('Hi just checking something ')
 img_sample, voxel_sample = train_dataset[0]
-
+img_array = np.array(img_sample)
 # Check shape of the image
 print(type(img_sample))
-print("Image shape:", img_sample.shape)
+print("Image shape:", img_array.shape)
 
 # Check shape of the voxel data (AutoCAD model)
 print("Voxel data shape:", voxel_sample.shape)
