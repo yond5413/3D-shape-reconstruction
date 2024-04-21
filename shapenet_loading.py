@@ -15,9 +15,11 @@ class ShapeNetDataset(Dataset):
         self.file_list = self._load_file_list()
    
     def _load_file_list(self):
+        print('in load_file')
         file_list = []
         for img_file in os.listdir(self.img_dir):
             img_path = os.path.join(self.img_dir, img_file)
+            print(img_path)
             voxel_file = os.path.join(self.voxel_dir, img_file.replace('.png', '.mat'))
             if os.path.isfile(voxel_file):
                 file_list.append((img_path, voxel_file))
@@ -28,7 +30,7 @@ class ShapeNetDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path, voxel_file = self.file_list[idx]
-
+        
         # Load input image
         image = Image.open(img_path).convert("RGB")
         if self.transform:
