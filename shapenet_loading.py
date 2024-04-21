@@ -17,6 +17,8 @@ class ShapeNetDataset(Dataset):
     def _load_file_list(self):
         print('in load_file')
         file_list = []
+        print('foo')
+        print(os.listdir(self.voxel_dir))
         for voxel_file in os.listdir(self.voxel_dir):
             # Ensure the file is a voxel file (model.mat)
             if voxel_file.endswith('.mat'):
