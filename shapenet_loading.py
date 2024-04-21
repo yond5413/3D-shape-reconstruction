@@ -46,7 +46,7 @@ val_img_dir = curr_dir+'/'+'datasets/val_imgs'
 val_voxel_dir = curr_dir+'/'+'datasets/val_voxels'
 test_img_dir = curr_dir+'/'+'datasets/test_imgs'
 test_voxel_dir = curr_dir+'/'+'datasets/test'
-transform = transforms.Compose()
+#transform = transforms.Compose()
 # TODO transformation
 train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir, transform=transform)
 test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir, transform=transform)
