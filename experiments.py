@@ -63,13 +63,13 @@ def get_dataloaders(args):
     val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir,transform=transform_train)#, transform=transform)
     ############################################################################
     train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=32, shuffle=True, num_workers=args.num_workers)
+    train_dataset, batch_size=16, shuffle=True, num_workers=args.num_workers)
     ######
     val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=32, shuffle=True, num_workers=args.num_workers)
+    val_dataset, batch_size=16, shuffle=True, num_workers=args.num_workers)
     ######
     test_loader = torch.utils.data.DataLoader(
-    test_dataset, batch_size=32, shuffle=True, num_workers=args.num_workers)
+    test_dataset, batch_size=16, shuffle=True, num_workers=args.num_workers)
     return train_loader,val_loader,test_loader
 #########
 if __name__ == "__main__":
