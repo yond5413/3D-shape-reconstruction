@@ -49,7 +49,7 @@ class ShapeNetDataset(Dataset):
         img_path, voxel_file = self.file_list[idx]
 
         # Load input image
-        image = Image.open(img_path)#.convert("RGB")
+        image = Image.open(img_path).convert("RGB")
         if self.transform:
         #    for transform in self.transforms:
         #        transformed_image = transform(transformed_image)
