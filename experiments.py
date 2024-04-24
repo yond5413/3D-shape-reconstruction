@@ -11,7 +11,7 @@ import argparse
 from model import Autoencoder
 from train import train
 from test import test
-from shapenet_loading 
+from shapenet_loading import ShapeNetDataset
 ########
 from torch.utils.data import DataLoader
 import torchvision
@@ -42,6 +42,35 @@ def optimizer_selection(model, opt,lr ):
 ########
 def get_model(args):
     pass
+def get_dataloaders(args):
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(256, padding=3),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
+    
+    curr_dir = os.getcwd()
+    train_img_dir = curr_dir+'/'+'datasets/train_imgs'
+    train_voxel_dir = curr_dir+'/'+'datasets/train_voxels'
+    val_img_dir = curr_dir+'/'+'datasets/val_imgs'
+    val_voxel_dir = curr_dir+'/'+'datasets/val_voxels'
+    test_img_dir = curr_dir+'/'+'datasets/test_imgs'
+    test_voxel_dir = curr_dir+'/'+'datasets/test'
+    
+    train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir)#, transform=transform)
+    test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir)#, transform=transform)
+    val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir)#, transform=transform)
+    ############################################################################
+    train_loader = torch.utils.data.DataLoader(
+    train_dataset, batch_size=128, shuffle=True, num_workers=args.num_workers)
+    ######
+    val_loader = torch.utils.data.DataLoader(
+    val_dataset, batch_size=128, shuffle=True, num_workers=args.num_workers)
+    ######
+    test_loader = torch.utils.data.DataLoader(
+    test_dataset, batch_size=128, shuffle=True, num_workers=args.num_workers)
+    return train_loader,val_loader,test_loader
 #########
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='3D reconstruction')
@@ -52,6 +81,7 @@ if __name__ == "__main__":
     parser.add_argument('--opt', default ='sgd',type = str ,help = "optimzer")
     parser.add_argument('--new_model', default =False,type = bool ,help = "new_model" )
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
+    parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
     args = parser.parse_args()
     
     device = args.device
@@ -62,9 +92,6 @@ if __name__ == "__main__":
     opt = optimizer_selection(model,args.opt,args.lr)
     ##################################
     print('==> Preparing data..')
-    transform_train = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    ])
+    train_loader,val_loader,test_loader = get_dataloaders(args)
+    train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args)
+    

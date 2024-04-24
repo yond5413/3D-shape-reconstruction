@@ -31,8 +31,9 @@ def calculate_voxel_iou_accuracy(predictions, targets):
 def loss_stetup():
     pass
 
-def train(model,num_epochs,train_loader,val_loader,criterion,optimizer,configs):
+def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
     ### set criterion to loss
+    criterion = VoxelIoULoss
     for epoch in range(num_epochs):
         running_loss = 0.0
         for i, data in enumerate(train_loader, 0):
