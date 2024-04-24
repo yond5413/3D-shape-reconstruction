@@ -78,7 +78,7 @@ if __name__ == "__main__":
     parser.add_argument('--device', default='cuda',type = str, help =  "device")
     parser.add_argument('--num_workers',default= 2, type= int, help = "dataloader workers")
     parser.add_argument('--data_path',default="./datasets", type= str, help = "data path")
-    parser.add_argument('--opt', default ='sgd',type = str ,help = "optimzer")
+    parser.add_argument('--opt', default ='adam',type = str ,help = "optimzer")
     parser.add_argument('--new_model', default =False,type = bool ,help = "new_model" )
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
     parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
