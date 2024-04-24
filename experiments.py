@@ -57,10 +57,10 @@ def get_dataloaders(args):
     val_voxel_dir = curr_dir+'/'+'datasets/val_voxels'
     test_img_dir = curr_dir+'/'+'datasets/test_imgs'
     test_voxel_dir = curr_dir+'/'+'datasets/test'
-    
-    train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir)#, transform=transform)
-    test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir)#, transform=transform)
-    val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir)#, transform=transform)
+    #TODO update transforms for each
+    train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir,transform=transform_train)#, transform=transform)
+    test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir,transform=transform_train)#, transform=transform)
+    val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir,transform=transform_train)#, transform=transform)
     ############################################################################
     train_loader = torch.utils.data.DataLoader(
     train_dataset, batch_size=128, shuffle=True, num_workers=args.num_workers)

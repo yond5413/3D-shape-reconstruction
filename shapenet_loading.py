@@ -50,9 +50,11 @@ class ShapeNetDataset(Dataset):
 
         # Load input image
         image = Image.open(img_path).convert("RGB")
-        if self.transform:
-            image = self.transform(image)
-
+        #if self.transform:
+        #    for transform in self.transforms:
+        #        transformed_image = transform(transformed_image)
+        image = self.transform(image)
+        
         # Load ground truth voxel data
         voxel_data = scipy.io.loadmat(voxel_file)['input']
         #print(f"type:{voxel_data}")
