@@ -43,7 +43,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
             
             print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
             print(f"data.size(): {data[1].size() }")
-            print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}")
+            print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}, {voxel_grids.size()}")
             ######################
             inputs = inputs.to(configs.device) ### should be cuda
             voxel_grids = voxel_grids.to(configs.device)
