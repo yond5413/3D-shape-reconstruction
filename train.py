@@ -33,7 +33,7 @@ def loss_stetup():
 
 def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
     ### set criterion to loss
-    criterion = VoxelIoULoss
+    criterion = VoxelIoULoss()
     for epoch in range(num_epochs):
         running_loss = 0.0
         for i, data in enumerate(train_loader):
