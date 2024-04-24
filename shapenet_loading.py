@@ -45,7 +45,7 @@ class ShapeNetDataset(Dataset):
         return len(self.file_list)
 
     def __getitem__(self, idx):
-        print(f"idx:{idx}, len: {self.__len__()}")
+        #print(f"idx:{idx}, len: {self.__len__()}")
         img_path, voxel_file = self.file_list[idx]
 
         # Load input image
