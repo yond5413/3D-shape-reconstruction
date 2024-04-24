@@ -42,7 +42,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
             inputs, voxel_grids = data
             
             print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
-            print(f"data.size(): {data[1].size() }")
+            print(f"data[0].size(): {data[0].size() }, data[1].size(): {data[1].size() }")
             print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}, {voxel_grids.size()}")
             print(f"voxel[0].size(): {voxel_grids[0].size() } voxel[1].size(): {voxel_grids[1].size() }")
             ######################
