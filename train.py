@@ -38,6 +38,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
         running_loss = 0.0
         for i, data in enumerate(train_loader):
             #print(f"i: {i}, data: {data}")
+            torch.cuda.empty_cache()
             inputs, voxel_grids = data
             ######################
             inputs = inputs.to(configs.device) ### should be cuda
