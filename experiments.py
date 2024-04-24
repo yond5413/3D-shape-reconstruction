@@ -44,7 +44,7 @@ def get_model(args):
     pass
 def get_dataloaders(args):
     transform_train = transforms.Compose([
-        transforms.RandomCrop(256, padding=3),
+        transforms.Resize((256,256)),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
