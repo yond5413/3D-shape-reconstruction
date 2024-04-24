@@ -15,10 +15,10 @@ class ShapeNetDataset(Dataset):
         self.file_list = self._load_file_list()
    
     def _load_file_list(self):
-        print('in load_file')
+        #print('in load_file')
         file_list = []
-        print('foo')
-        print(len(os.listdir(self.voxel_dir)))
+        #print('foo')
+        #print(len(os.listdir(self.voxel_dir)))
         files_and_dirs = os.listdir(self.voxel_dir)
         # Filter out only directories
         directories = [d for d in files_and_dirs if os.path.isdir(os.path.join(self.voxel_dir, d))]
