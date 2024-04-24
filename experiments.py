@@ -93,5 +93,6 @@ if __name__ == "__main__":
     ##################################
     print('==> Preparing data..')
     train_loader,val_loader,test_loader = get_dataloaders(args)
+    print("Beginning Trainning")
     train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args)
     
