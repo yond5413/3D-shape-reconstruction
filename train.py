@@ -37,8 +37,10 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
     for epoch in range(num_epochs):
         running_loss = 0.0
         for i, data in enumerate(train_loader):
-            print(f"i: {i}, data: {data}")
+            #print(f"i: {i}, data: {data}")
             inputs, voxel_grids = data
+            inputs = inputs.to(configs.device) ### should be cuda
+            voxel_grids = voxel_grids.to(configs)
             optimizer.zero_grad()
 
             outputs = model(inputs)
