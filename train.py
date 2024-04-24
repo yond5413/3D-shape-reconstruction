@@ -36,7 +36,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
     criterion = VoxelIoULoss
     for epoch in range(num_epochs):
         running_loss = 0.0
-        for i, data in enumerate(train_loader, 0):
+        for i, data in enumerate(train_loader):
             inputs, voxel_grids = data
             optimizer.zero_grad()
 
