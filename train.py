@@ -38,7 +38,9 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
         running_loss = 0.0
         for i, data in enumerate(train_loader):
             print(f"i: {i}")#, data: {data}")
-            torch.cuda.empty_cache()
+            torch.cuda.empty_cache() ## clean up gpu memory
+            torch.cuda.synchronize() ## ensures that threads wait
+            
             inputs, voxel_grids = data
             
             print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
