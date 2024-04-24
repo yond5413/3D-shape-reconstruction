@@ -52,6 +52,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
             optimizer.zero_grad()
 
             outputs = model(inputs)
+            print(outputs.size())
             loss = criterion(outputs, voxel_grids)
             #loss.backward() NonGrad
             optimizer.step()
