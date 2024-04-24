@@ -40,6 +40,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
             print(f"i: {i}")#, data: {data}")
             torch.cuda.empty_cache()
             inputs, voxel_grids = data
+            print(f"len of inputs: {len(inputs)}")
             ######################
             inputs = inputs.to(configs.device) ### should be cuda
             voxel_grids = voxel_grids.to(configs.device)
