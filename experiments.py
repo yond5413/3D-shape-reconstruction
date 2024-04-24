@@ -16,6 +16,8 @@ from shapenet_loading import ShapeNetDataset
 from torch.utils.data import DataLoader
 import torchvision
 import torchvision.transforms as transforms
+##########
+import math
 def optimizer_selection(model, opt,lr ):
     opt = opt.lower()
     print(f"opt: {opt} in the selection function")
@@ -70,6 +72,31 @@ def get_dataloaders(args):
     ######
     test_loader = torch.utils.data.DataLoader(
     test_dataset, batch_size=8, shuffle=True, num_workers=args.num_workers)
+    
+    total_samples = len(train_loader.dataset)
+    batch_size = train_loader.batch_size
+    num_mini_batches = math.ceil(total_samples / batch_size)
+    print("For training")
+    print("Total number of samples:", total_samples)
+    print("Batch size:", batch_size)
+    print("Number of mini-batches:", num_mini_batches)
+    ####################################
+    total_samples = len(val_loader.dataset)
+    batch_size = train_loader.batch_size
+    num_mini_batches = math.ceil(total_samples / batch_size)
+    print("For validation")
+    print("Total number of samples:", total_samples)
+    print("Batch size:", batch_size)
+    print("Number of mini-batches:", num_mini_batches)
+    ####################################
+    total_samples = len(test_loader.dataset)
+    batch_size = train_loader.batch_size
+    num_mini_batches = math.ceil(total_samples / batch_size)
+    print("For testing")
+    print("Total number of samples:", total_samples)
+    print("Batch size:", batch_size)
+    print("Number of mini-batches:", num_mini_batches)
+    
     return train_loader,val_loader,test_loader
 #########
 if __name__ == "__main__":

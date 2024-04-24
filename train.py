@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-
+from tqdm import tqdm
 def evaluate_voxel_prediction(prediction, gt):
     """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
     intersection = np.sum(np.logical_and(prediction, gt))
@@ -36,25 +36,25 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
     criterion = VoxelIoULoss()
     for epoch in range(num_epochs):
         running_loss = 0.0
-        for i, data in enumerate(train_loader):
+        for i, data in enumerate(tqdm(train_loader, desc="Processing batches", leave=False)):#enumerate(train_loader):
             print(f"i: {i}")#, data: {data}")
             torch.cuda.empty_cache() ## clean up gpu memory
             torch.cuda.synchronize() ## ensures that threads wait
             
             inputs, voxel_grids = data
             
-            print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
-            print(f"data[0].size(): {data[0].size() }, data[1].size(): {data[1].size() }")
-            print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}, {voxel_grids.size()}")
-            print(f"voxel[0].size(): {voxel_grids[0].size() } voxel[1].size(): {voxel_grids[1].size() }")
+            #print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
+            #print(f"data[0].size(): {data[0].size() }, data[1].size(): {data[1].size() }")
+            #print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}, {voxel_grids.size()}")
+            #print(f"voxel[0].size(): {voxel_grids[0].size() } voxel[1].size(): {voxel_grids[1].size() }")
             ######################
             inputs = inputs.to(configs.device) ### should be cuda
             voxel_grids = voxel_grids.to(configs.device)
             ######################
             optimizer.zero_grad()
 
-            outputs = model(inputs).detach()
-            print(f"out:{outputs.size()}")### might be the main bottleneck
+            outputs = model(inputs).detach()# double check if it is usable 
+            #print(f"out:{outputs.size()}")### might be the main bottleneck
             loss = criterion(outputs, voxel_grids)
             #loss.backward() NonGrad
             optimizer.step()
