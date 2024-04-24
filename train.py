@@ -47,7 +47,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
 
             outputs = model(inputs)
             loss = criterion(outputs, voxel_grids)
-            loss.backward()
+            #loss.backward() NonGrad
             optimizer.step()
 
             running_loss += loss.item()
