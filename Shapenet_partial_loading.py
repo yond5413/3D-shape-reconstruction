@@ -13,8 +13,9 @@ class ShapeNetDataset_partial(Dataset):
         self.img_dir = img_dir
         self.voxel_dir = voxel_dir
         self.transform = transform
-        self.file_list = self._load_file_list()
         self.fraction = fraction
+        self.file_list = self._load_file_list()
+        
     def _load_file_list(self):
         file_list = []
         files_and_dirs = os.listdir(self.voxel_dir)
