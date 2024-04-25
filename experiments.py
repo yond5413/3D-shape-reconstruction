@@ -109,7 +109,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers',default= 2, type= int, help = "dataloader workers")
     parser.add_argument('--data_path',default="./datasets", type= str, help = "data path")
     parser.add_argument('--opt', default ='adam',type = str ,help = "optimzer")
-    parser.add_argument('--new_model', default =False,type = bool ,help = "new_model" )
+    parser.add_argument('--new_model', default =True,type = bool ,help = "new_model" )
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
     parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
     parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
@@ -122,7 +122,10 @@ if __name__ == "__main__":
     if args.new_model:
         model = Autoencoder(latent_dim=args.latent_dim)
     else:
-        #### load 
+        #### load from 'model.pth'
+        path = 'model.pth'
+        model = Autoencoder(latent_dim=args.latent_dim)
+        model.load_state_dict(torch.load(path))
         pass
     model.to(device)
     opt = optimizer_selection(model,args.opt,args.lr)
