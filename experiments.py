@@ -18,7 +18,7 @@ import torchvision
 import torchvision.transforms as transforms
 ##########
 import math
-def optimizer_selection(model, opt,lr ):
+def optimizer_selection(model, opt,lr):
     opt = opt.lower()
     print(f"opt: {opt} in the selection function")
     if opt == "sgd":
@@ -59,19 +59,20 @@ def get_dataloaders(args):
     val_voxel_dir = curr_dir+'/'+'datasets/val_voxels'
     test_img_dir = curr_dir+'/'+'datasets/test_imgs'
     test_voxel_dir = curr_dir+'/'+'datasets/test'
+    batch_size = args.batch_sise 
     #TODO update transforms for each
     train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir,transform=transform_train)#, transform=transform)
     test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir,transform=transform_train)#, transform=transform)
     val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir,transform=transform_train)#, transform=transform)
     ############################################################################
     train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=8, shuffle=True, num_workers=args.num_workers)
+    train_dataset, batch_size=batch_size, shuffle=True, num_workers=args.num_workers)
     ######
     val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=8, shuffle=True, num_workers=args.num_workers)
+    val_dataset, batch_size=batch_size, shuffle=True, num_workers=args.num_workers)
     ######
     test_loader = torch.utils.data.DataLoader(
-    test_dataset, batch_size=8, shuffle=True, num_workers=args.num_workers)
+    test_dataset, batch_size=batch_size, shuffle=True, num_workers=args.num_workers)
     
     total_samples = len(train_loader.dataset)
     batch_size = train_loader.batch_size
@@ -109,6 +110,7 @@ if __name__ == "__main__":
     parser.add_argument('--new_model', default =False,type = bool ,help = "new_model" )
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
     parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
+    parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
     args = parser.parse_args()
     
     device = args.device
