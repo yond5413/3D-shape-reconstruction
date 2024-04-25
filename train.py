@@ -40,9 +40,12 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
         model = nn.DataParallel(model,device_ids)
     #########################
     criterion = VoxelIoULoss()
+    
     for epoch in range(num_epochs):
+        model.train()
         running_loss = 0.0
-        for i, data in enumerate(tqdm(train_loader, desc="Processing batches", leave=False)):#enumerate(train_loader):
+        progress_bar = tqdm(total=len(train_loader))
+        for i, data in enumerate(train_loader):#enumerate(tqdm(train_loader, desc="Processing batches", leave=False)):#enumerate(train_loader):
             #print(f"i: {i}")#, data: {data}")
             #torch.cuda.empty_cache() ## clean up gpu memory
             #torch.cuda.synchronize() ## ensures that threads wait
@@ -63,7 +66,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
             loss = criterion(outputs, voxel_grids)
             #loss.backward() NonGrad
             optimizer.step()
-
+            progress_bar.update(1)
             running_loss += loss.item()
             if i % 100 == 99:  # Print every 100 mini-batches
                 print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
@@ -79,5 +82,5 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
             average_iou_accuracy = total_iou_accuracy / len(val_loader)
             print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
-            model.train()
+            #model.train()
     print('Finished Training')

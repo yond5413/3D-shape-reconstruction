@@ -100,6 +100,7 @@ def get_dataloaders(args):
     
     return train_loader,val_loader,test_loader
 #########
+## rn batch_size: 28 with 4 gpus using data parallel seems fine
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='3D reconstruction')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
