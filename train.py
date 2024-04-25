@@ -28,9 +28,28 @@ def calculate_voxel_iou_accuracy(predictions, targets):
         total_iou += evaluate_voxel_prediction(prediction, target)
     average_iou = total_iou / len(predictions)
     return average_iou
-def gpu_warmup():
-    pass
-
+def gpu_warmup(device_ids):
+    print(f"GPU(s) warmups: {len(device_ids)}")
+    model = nn.Sequential(
+        nn.Linear(10, 20),
+        nn.ReLU(),
+        nn.Linear(20, 30),
+        nn.ReLU(),
+        nn.Linear(30, 1)
+    )
+    # Move the model to GPUs using DataParallel
+    model = nn.DataParallel(model, device_ids=device_ids)
+    model.cuda()
+    # Generate dummy input data
+    input_data = torch.randn(1000, 10).cuda()
+    # Perform a forward pass with dummy data
+    model.train()
+    output = model(input_data)
+    # Do some additional computation
+    result = torch.mean(output)  # For example, calculate the mean of the output
+    # Print the result (optional)
+    print("Result:", result.item())
+    print("Warm-up done!!!!")
 def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
     ### set criterion to loss
     ######## wrap in dataparallel
@@ -42,8 +61,8 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
     criterion = VoxelIoULoss()
     
     for epoch in range(num_epochs):
-        if epoch ==0:
-            pass
+        if epoch ==0 and (num_gpus>0):
+            gpu_warmup(device_ids)
         else:
             model.train()
             running_loss = 0.0
