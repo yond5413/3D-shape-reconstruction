@@ -61,6 +61,7 @@ class ShapeNetDataset_partial(Dataset):
         voxel_data = scipy.io.loadmat(voxel_file)['input']
         #print(f"type:{voxel_data}")
         return image, torch.from_numpy(voxel_data).float()
+    
 if __name__ == "__main__":
     curr_dir = os.getcwd()
     train_img_dir = curr_dir+'/'+'datasets/train_imgs'
@@ -71,16 +72,16 @@ if __name__ == "__main__":
     test_voxel_dir = curr_dir+'/'+'datasets/test'
     #transform = transforms.Compose()
     # TODO transformation
-    train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir)#, transform=transform)
-    test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir)#, transform=transform)
-    val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir)#, transform=transform)
+    #train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir)#, transform=transform)
+    #test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir)#, transform=transform)
+    #val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir)#, transform=transform)
 
     print('Hi just checking something ')
-    img_sample, voxel_sample = train_dataset[0]
-    img_array = np.array(img_sample)
+    #img_sample, voxel_sample = train_dataset[0]
+    #img_array = np.array(img_sample)
     # Check shape of the image
-    print(type(img_sample))
-    print("Image shape:", img_array.shape)
+    #print(type(img_sample))
+    #print("Image shape:", img_array.shape)
 
     # Check shape of the voxel data (AutoCAD model)
-    print("Voxel data shape:", voxel_sample.shape)
+    #print("Voxel data shape:", voxel_sample.shape)
