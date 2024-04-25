@@ -61,7 +61,7 @@ def get_dataloaders(args):
     test_img_dir = curr_dir+'/'+'datasets/test_imgs'
     test_voxel_dir = curr_dir+'/'+'datasets/test'
     batch_size = args.batch_size 
-    fraction = args.tr
+    fraction = args.dataset_partition
     #TODO update transforms for each
     train_dataset = ShapeNetDataset_partial(train_img_dir, train_voxel_dir,transform=transform_train,fraction=fraction)
     test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir,transform=transform_train)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
     parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
     parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
-    parser.add_argument('--traininig_split', default =(1/12),type = float ,help = "amount of training data used")
+    parser.add_argument('--dataset_partition', default =(1/12),type = float ,help = "amount of training data used")
     args = parser.parse_args()
     
     device = args.device
