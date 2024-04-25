@@ -31,16 +31,21 @@ def calculate_voxel_iou_accuracy(predictions, targets):
 def loss_stetup():
     pass
 
-def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
+def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
     ### set criterion to loss
+    ######## wrap in dataparallel
+    num_gpus = torch.cuda.device_count()
+    if num_gpus > 1:
+        device_ids = list(range(num_gpus))
+        model = nn.DataParallel(model,device_ids)
+    #########################
     criterion = VoxelIoULoss()
     for epoch in range(num_epochs):
         running_loss = 0.0
         for i, data in enumerate(tqdm(train_loader, desc="Processing batches", leave=False)):#enumerate(train_loader):
             #print(f"i: {i}")#, data: {data}")
-            torch.cuda.empty_cache() ## clean up gpu memory
-            torch.cuda.synchronize() ## ensures that threads wait
-            
+            #torch.cuda.empty_cache() ## clean up gpu memory
+            #torch.cuda.synchronize() ## ensures that threads wait
             inputs, voxel_grids = data
             
             #print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
@@ -64,15 +69,15 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs):
                 print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
                 running_loss = 0.0
 
-    # Evaluation after each epoch
-    with torch.no_grad():
-        model.eval()
-        total_iou_accuracy = 0
-        for inputs, voxel_grids in val_loader:
-            outputs = model(inputs)
-            predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
-            total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
-        average_iou_accuracy = total_iou_accuracy / len(val_loader)
-        print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
-        model.train()
+        # Evaluation after each epoch
+        with torch.no_grad():
+            model.eval()
+            total_iou_accuracy = 0
+            for inputs, voxel_grids in val_loader:
+                outputs = model(inputs)
+                predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
+                total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
+            average_iou_accuracy = total_iou_accuracy / len(val_loader)
+            print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
+            model.train()
     print('Finished Training')

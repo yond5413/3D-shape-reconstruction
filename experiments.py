@@ -84,7 +84,7 @@ def get_dataloaders(args):
     total_samples = len(val_loader.dataset)
     batch_size = train_loader.batch_size
     num_mini_batches = math.ceil(total_samples / batch_size)
-    print("For validation")
+    print("\n For validation")
     print("Total number of samples:", total_samples)
     print("Batch size:", batch_size)
     print("Number of mini-batches:", num_mini_batches)
@@ -92,7 +92,7 @@ def get_dataloaders(args):
     total_samples = len(test_loader.dataset)
     batch_size = train_loader.batch_size
     num_mini_batches = math.ceil(total_samples / batch_size)
-    print("For testing")
+    print("\n For testing")
     print("Total number of samples:", total_samples)
     print("Batch size:", batch_size)
     print("Number of mini-batches:", num_mini_batches)
@@ -121,5 +121,5 @@ if __name__ == "__main__":
     print('==> Preparing data..')
     train_loader,val_loader,test_loader = get_dataloaders(args)
     print("Beginning Trainning")
-    train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args)
+    train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args,device = device)
     
