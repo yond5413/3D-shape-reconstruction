@@ -28,7 +28,7 @@ def calculate_voxel_iou_accuracy(predictions, targets):
         total_iou += evaluate_voxel_prediction(prediction, target)
     average_iou = total_iou / len(predictions)
     return average_iou
-def loss_stetup():
+def gpu_warmup():
     pass
 
 def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
@@ -42,45 +42,52 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
     criterion = VoxelIoULoss()
     
     for epoch in range(num_epochs):
-        model.train()
-        running_loss = 0.0
-        progress_bar = tqdm(total=len(train_loader))
-        for i, data in enumerate(train_loader):#enumerate(tqdm(train_loader, desc="Processing batches", leave=False)):#enumerate(train_loader):
-            #print(f"i: {i}")#, data: {data}")
-            #torch.cuda.empty_cache() ## clean up gpu memory
-            #torch.cuda.synchronize() ## ensures that threads wait
-            inputs, voxel_grids = data
-            
-            #print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
-            #print(f"data[0].size(): {data[0].size() }, data[1].size(): {data[1].size() }")
-            #print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}, {voxel_grids.size()}")
-            #print(f"voxel[0].size(): {voxel_grids[0].size() } voxel[1].size(): {voxel_grids[1].size() }")
-            ######################
-            inputs = inputs.to(configs.device) ### should be cuda
-            voxel_grids = voxel_grids.to(configs.device)
-            ######################
-            optimizer.zero_grad()
+        if epoch ==0:
+            pass
+        else:
+            model.train()
+            running_loss = 0.0
+            progress_bar = tqdm(total=len(train_loader))
+            for i, data in enumerate(train_loader):#enumerate(tqdm(train_loader, desc="Processing batches", leave=False)):#enumerate(train_loader):
+                #print(f"i: {i}")#, data: {data}")
+                #torch.cuda.empty_cache() ## clean up gpu memory
+                #torch.cuda.synchronize() ## ensures that threads wait
+                inputs, voxel_grids = data
+                
+                #print(f"len of inputs: {len(inputs)}, data[0]: {len(data[0])}\n {type(data[0])} {data[0].size()}")
+                #print(f"data[0].size(): {data[0].size() }, data[1].size(): {data[1].size() }")
+                #print(f"voxel_grid len: {len(voxel_grids)}, type: {type(voxel_grids)}, {voxel_grids.size()}")
+                #print(f"voxel[0].size(): {voxel_grids[0].size() } voxel[1].size(): {voxel_grids[1].size() }")
+                ######################
+                inputs = inputs.to(configs.device) ### should be cuda
+                voxel_grids = voxel_grids.to(configs.device)
+                ######################
+                optimizer.zero_grad()
 
-            outputs = model(inputs).detach()# double check if it is usable 
-            #print(f"out:{outputs.size()}")### might be the main bottleneck
-            loss = criterion(outputs, voxel_grids)
-            #loss.backward() NonGrad
-            optimizer.step()
-            progress_bar.update(1)
-            running_loss += loss.item()
-            if i % 100 == 99:  # Print every 100 mini-batches
-                print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
-                running_loss = 0.0
+                outputs = model(inputs).detach()# double check if it is usable 
+                #print(f"out:{outputs.size()}")### might be the main bottleneck
+                loss = criterion(outputs, voxel_grids)
+                #loss.backward() NonGrad
+                optimizer.step()
+                progress_bar.update(1)
+                running_loss += loss.item()
+                if i % 100 == 99:  # Print every 100 mini-batches
+                    print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
+                    running_loss = 0.0
 
-        # Evaluation after each epoch
-        with torch.no_grad():
-            model.eval()
-            total_iou_accuracy = 0
-            for inputs, voxel_grids in val_loader:
-                outputs = model(inputs)
-                predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
-                total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
-            average_iou_accuracy = total_iou_accuracy / len(val_loader)
-            print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
-            #model.train()
+            # Evaluation after each epoch
+            with torch.no_grad():
+                model.eval()
+                total_iou_accuracy = 0
+                for inputs, voxel_grids in val_loader:
+                    outputs = model(inputs)
+                    predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
+                    total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
+                average_iou_accuracy = total_iou_accuracy / len(val_loader)
+                print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
+                #model.train()
+            if epoch%5 ==0:
+                ### save model somewhere 
+                pass
+
     print('Finished Training')

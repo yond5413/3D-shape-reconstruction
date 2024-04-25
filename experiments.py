@@ -12,6 +12,7 @@ from model import Autoencoder
 from train import train
 from test import test
 from shapenet_loading import ShapeNetDataset
+from Shapenet_partial_loading import ShapeNetDataset_partial
 ########
 from torch.utils.data import DataLoader
 import torchvision
@@ -60,17 +61,17 @@ def get_dataloaders(args):
     test_img_dir = curr_dir+'/'+'datasets/test_imgs'
     test_voxel_dir = curr_dir+'/'+'datasets/test'
     batch_size = args.batch_size 
+    fraction = args.tr
     #TODO update transforms for each
-    train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir,transform=transform_train)#, transform=transform)
-    test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir,transform=transform_train)#, transform=transform)
-    val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir,transform=transform_train)#, transform=transform)
-    ############################################################################
+    train_dataset = ShapeNetDataset_partial(train_img_dir, train_voxel_dir,transform=transform_train,fraction=fraction)
+    test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir,transform=transform_train)
+    val_dataset = ShapeNetDataset(val_img_dir, val_voxel_dir,transform=transform_train)
     train_loader = torch.utils.data.DataLoader(
     train_dataset, batch_size=batch_size, shuffle=True, num_workers=args.num_workers)
-    ######
+    ###########
     val_loader = torch.utils.data.DataLoader(
     val_dataset, batch_size=batch_size, shuffle=True, num_workers=args.num_workers)
-    ######
+    ###########
     test_loader = torch.utils.data.DataLoader(
     test_dataset, batch_size=batch_size, shuffle=True, num_workers=args.num_workers)
     
@@ -112,12 +113,17 @@ if __name__ == "__main__":
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
     parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
     parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
+    parser.add_argument('--traininig_split', default =(1/12),type = float ,help = "amount of training data used")
     args = parser.parse_args()
     
     device = args.device
     if device == "cuda":
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = Autoencoder(latent_dim=args.latent_dim)
+    if args.new_model:
+        model = Autoencoder(latent_dim=args.latent_dim)
+    else:
+        #### load 
+        pass
     model.to(device)
     opt = optimizer_selection(model,args.opt,args.lr)
     ##################################
