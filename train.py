@@ -105,8 +105,15 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 average_iou_accuracy = total_iou_accuracy / len(val_loader)
                 print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
                 #model.train()
-            if epoch%5 ==0:
+            if (epoch%5 ==0) or ((epoch+1)==num_epochs):
                 ### save model somewhere 
-                pass
+                checkpoint_path = 'model.pth'
+                model_module = model.module
+                torch.save({
+                    'model_state_dict': model_module.state_dict(),
+                    'optimizer_state_dict': optimizer.state_dict(),
+                    'epoch': epoch,
+                    'loss': loss
+                }, checkpoint_path)
 
     print('Finished Training')
