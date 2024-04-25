@@ -59,7 +59,7 @@ def get_dataloaders(args):
     val_voxel_dir = curr_dir+'/'+'datasets/val_voxels'
     test_img_dir = curr_dir+'/'+'datasets/test_imgs'
     test_voxel_dir = curr_dir+'/'+'datasets/test'
-    batch_size = args.batch_sise 
+    batch_size = args.batch_size 
     #TODO update transforms for each
     train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir,transform=transform_train)#, transform=transform)
     test_dataset = ShapeNetDataset(test_img_dir, test_voxel_dir,transform=transform_train)#, transform=transform)
