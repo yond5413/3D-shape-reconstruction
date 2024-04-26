@@ -111,8 +111,8 @@ def get_dataloaders(args):
 ## rn batch_size: 28 with 4 gpus using data parallel seems fine
 if __name__ == "__main__":
     #cudnn_path = "/opt/conda/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_cnn_infer.so.8"
-    cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8"
-    #cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8.9.4"
+    #cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8"
+    cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8.9.4"
     os.environ["CUDNN_LIBRARY_PATH"] = cudnn_path
     os.environ["LD_LIBRARY_PATH"] = f"{os.path.dirname(cudnn_path)}:{os.environ.get('LD_LIBRARY_PATH', '')}"
     # Now you can check the cuDNN version
