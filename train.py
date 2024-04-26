@@ -5,8 +5,8 @@ import numpy as np
 from tqdm import tqdm
 def evaluate_voxel_prediction(prediction, gt):
     """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
-    intersection = np.sum(np.logical_and(prediction, gt))
-    union = np.sum(np.logical_or(prediction, gt))
+    intersection = torch.sum(torch.logical_and(prediction, gt).float())#np.sum(np.logical_and(prediction, gt))
+    union = torch.sum(torch.logical_or(prediction, gt).float())#np.sum(np.logical_or(prediction, gt))
     IoU = intersection / (union + 1e-6)  # Adding epsilon to avoid division by zero
     return IoU
 # Custom IoU loss function
