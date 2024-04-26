@@ -15,8 +15,8 @@ class VoxelIoULoss(nn.Module):
         super(VoxelIoULoss, self).__init__()
 
     def forward(self, predicted_voxel_grid, ground_truth_voxel_grid):
-        predicted_voxel_grid.requires_grad_()
-        ground_truth_voxel_grid.requires_grad_()
+        #predicted_voxel_grid.requires_grad_()
+        #ground_truth_voxel_grid.requires_grad_()
 
         intersection = torch.sum(torch.logical_and(predicted_voxel_grid, ground_truth_voxel_grid).float())
         union = torch.sum(torch.logical_or(predicted_voxel_grid, ground_truth_voxel_grid).float())
@@ -89,6 +89,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 outputs = model(inputs)#.detach()# double check if it is usable 
                 #print(f"out:{outputs.size()}")### might be the main bottleneck
                 loss = criterion(outputs, voxel_grids)
+                print(f"Requires grade output:{outputs.requires_grad}, target:{voxel_grids.requires_grad}, inputs:{inputs.requires_grad}")
                 print(f"Loss: {loss}, pred:{outputs.size()}, gt :{voxel_grids.size()}")
                 loss.backward()# NonGrad
                 optimizer.step()
