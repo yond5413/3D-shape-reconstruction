@@ -146,7 +146,6 @@ if __name__ == "__main__":
     
     model.to(device)
     opt = optimizer_selection(model,args.opt,args.lr)
-    opt.to(device)
     ##################################
     print('==> Preparing data..')
     train_loader,val_loader,test_loader = get_dataloaders(args)
