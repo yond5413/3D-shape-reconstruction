@@ -114,6 +114,9 @@ if __name__ == "__main__":
     cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8"
     #cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8.9.4"
     os.environ["CUDNN_LIBRARY_PATH"] = cudnn_path
+    os.environ["LD_LIBRARY_PATH"] = f"{os.path.dirname(cudnn_path)}:{os.environ.get('LD_LIBRARY_PATH', '')}"
+    # Now you can check the cuDNN version
+    print("cuDNN version:", torch.backends.cudnn.version())
     #### changing the enviornment variable prior to traininig loop to help loss
     
     parser = argparse.ArgumentParser(description='3D reconstruction')
