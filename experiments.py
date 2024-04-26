@@ -64,8 +64,8 @@ def get_dataloaders(args):
     fraction = args.dataset_partition
     #TODO update transforms for each
     train_dataset = ShapeNetDataset_partial(train_img_dir, train_voxel_dir,transform=transform_train,fraction=fraction)
-    test_dataset = ShapeNetDataset_partial(test_img_dir, train_voxel_dir,transform=transform_train,fraction=fraction)
-    val_dataset = ShapeNetDataset_partial(val_img_dir, train_voxel_dir,transform=transform_train,fraction=fraction)
+    test_dataset = ShapeNetDataset_partial(test_img_dir, test_voxel_dir,transform=transform_train,fraction=fraction)
+    val_dataset = ShapeNetDataset_partial(val_img_dir, val_voxel_dir,transform=transform_train,fraction=fraction)
     '''
     #Total dataset with databelow or just seet fraction to one above
     train_dataset = ShapeNetDataset(train_img_dir, train_voxel_dir,transform=transform_train)
