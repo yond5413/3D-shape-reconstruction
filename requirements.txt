@@ -1,5 +1,5 @@
-torch
+torch == 2.1.0
 scipy
 Pillow
 numpy 
-torchvision
+torchvision == 0.16
