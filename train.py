@@ -93,15 +93,19 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 if i % 100 == 99:  # Print every 100 mini-batches
                     print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
                     running_loss = 0.0
-
+            print("Validation Now!!!")
             # Evaluation after each epoch
+            val_bar = tqdm(total=len(val_loader))
             with torch.no_grad():
                 model.eval()
                 total_iou_accuracy = 0
-                for inputs, voxel_grids in val_loader:
+                for val_inputs, val_voxel_grids in val_loader:
+                    val_inputs = val_inputs.to(configs.device)
+                    val_voxel_grids = val_voxel_grids.to(configs.device)
                     outputs = model(inputs)
                     predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
                     total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
+                    val_bar.update(1)
                 average_iou_accuracy = total_iou_accuracy / len(val_loader)
                 print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
                 #model.train()
