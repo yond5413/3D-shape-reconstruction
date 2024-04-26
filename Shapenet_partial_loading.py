@@ -59,8 +59,11 @@ class ShapeNetDataset_partial(Dataset):
         
         # Load ground truth voxel data
         voxel_data = scipy.io.loadmat(voxel_file)['input']
+        voxel_data = torch.from_numpy(voxel_data).float()
         #print(f"type:{voxel_data}")
-        return image, torch.from_numpy(voxel_data).float()
+        image.requires_grad_(True)
+        voxel_data.requires_grad(True)
+        return image, voxel_data
     
 if __name__ == "__main__":
     curr_dir = os.getcwd()
