@@ -23,7 +23,7 @@ class ShapeNetDataset_partial(Dataset):
         voxel_file = 'model.mat'
         
         # Randomly shuffle the list of directories
-        random.shuffle(directories)
+        #random.shuffle(directories)# not necessary
         fraction = self.fraction
         # Determine the number of directories to include based on the fraction
         num_directories = int(len(directories) * fraction)

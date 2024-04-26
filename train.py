@@ -86,7 +86,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 outputs = model(inputs).detach()# double check if it is usable 
                 #print(f"out:{outputs.size()}")### might be the main bottleneck
                 loss = criterion(outputs, voxel_grids)
-                #loss.backward() NonGrad
+                loss.backward()# NonGrad
                 optimizer.step()
                 progress_bar.update(1)
                 running_loss += loss.item()
@@ -102,9 +102,10 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 for val_inputs, val_voxel_grids in val_loader:
                     val_inputs = val_inputs.to(configs.device)
                     val_voxel_grids = val_voxel_grids.to(configs.device)
-                    outputs = model(inputs)
-                    predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
-                    total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
+                    outputs = model(val_inputs)
+                    predictions = outputs
+                    #predictions = (outputs > 0.5).float()  # Assuming outputs are probabilities
+                    total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, val_voxel_grids)
                     val_bar.update(1)
                 average_iou_accuracy = total_iou_accuracy / len(val_loader)
                 print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
