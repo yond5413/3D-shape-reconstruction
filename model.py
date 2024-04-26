@@ -3,7 +3,7 @@ from decoder import Decoder
 import torch
 import torch.nn as nn
 ### for computational graph
-from torchviz import make_dot
+
 class Autoencoder(nn.Module):
     def __init__(self, latent_dim =100):
         super(Autoencoder, self).__init__()  
