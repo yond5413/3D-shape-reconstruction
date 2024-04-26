@@ -86,7 +86,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 ######################
                 optimizer.zero_grad()
 
-                outputs = model(inputs).detach()# double check if it is usable 
+                outputs = model(inputs)#.detach()# double check if it is usable 
                 #print(f"out:{outputs.size()}")### might be the main bottleneck
                 loss = criterion(outputs, voxel_grids)
                 loss.backward()# NonGrad
