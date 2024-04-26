@@ -90,7 +90,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 #print(f"out:{outputs.size()}")### might be the main bottleneck
                 loss = criterion(outputs, voxel_grids)
                 print(f"Loss: {loss}, pred:{outputs.size()}, gt :{voxel_grids.size()}")
-                loss.backward()# NonGrad
+                #loss.backward()# NonGrad
                 optimizer.step()
                 progress_bar.update(1)
                 running_loss += loss.item()
