@@ -110,6 +110,10 @@ def get_dataloaders(args):
 #########
 ## rn batch_size: 28 with 4 gpus using data parallel seems fine
 if __name__ == "__main__":
+    cudnn_path = "/opt/conda/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_cnn_infer.so.8"
+    os.environ["CUDNN_LIBRARY_PATH"] = cudnn_path
+    #### changing the enviornment variable prior to traininig loop to help loss
+    
     parser = argparse.ArgumentParser(description='3D reconstruction')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--device', default='cuda',type = str, help =  "device")
