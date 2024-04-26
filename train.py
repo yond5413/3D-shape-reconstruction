@@ -15,6 +15,9 @@ class VoxelIoULoss(nn.Module):
         super(VoxelIoULoss, self).__init__()
 
     def forward(self, predicted_voxel_grid, ground_truth_voxel_grid):
+        predicted_voxel_grid.requires_grad_()
+        ground_truth_voxel_grid.requires_grad_()
+
         intersection = torch.sum(torch.logical_and(predicted_voxel_grid, ground_truth_voxel_grid).float())
         union = torch.sum(torch.logical_or(predicted_voxel_grid, ground_truth_voxel_grid).float())
         iou = intersection / (union + 1e-6)  # Adding epsilon to avoid division by zero
