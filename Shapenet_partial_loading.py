@@ -61,8 +61,7 @@ class ShapeNetDataset_partial(Dataset):
         voxel_data = scipy.io.loadmat(voxel_file)['input']
         voxel_data = torch.from_numpy(voxel_data).float()
         #print(f"type:{voxel_data}")
-        image.requires_grad_(True)
-        voxel_data.requires_grad_(True)
+        
         return image, voxel_data
     
 if __name__ == "__main__":

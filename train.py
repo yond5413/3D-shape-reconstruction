@@ -82,7 +82,9 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 #print(f"voxel[0].size(): {voxel_grids[0].size() } voxel[1].size(): {voxel_grids[1].size() }")
                 ######################
                 inputs = inputs.to(configs.device) ### should be cuda
+                inputs.requires_grad_(True)
                 voxel_grids = voxel_grids.to(configs.device)
+                voxel_grids.requires_grad_(True)
                 ######################
                 optimizer.zero_grad()
 
