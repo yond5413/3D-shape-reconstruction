@@ -90,13 +90,16 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 #print(f"out:{outputs.size()}")### might be the main bottleneck
                 loss = criterion(outputs, voxel_grids)
                 print(f"Loss: {loss}, pred:{outputs.size()}, gt :{voxel_grids.size()}")
-                #loss.backward()# NonGrad
+                loss.backward()# NonGrad
                 optimizer.step()
                 progress_bar.update(1)
                 running_loss += loss.item()
                 if i % 100 == 99:  # Print every 100 mini-batches
                     print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
                     running_loss = 0.0
+                # Clean up GPU memory
+            del input, voxel_grids, outputs, loss
+            torch.cuda.empty_cache()
             print("Validation Now!!!")
             # Evaluation after each epoch
             val_bar = tqdm(total=len(val_loader))
