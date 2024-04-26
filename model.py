@@ -2,7 +2,8 @@ from encoder import Encoder
 from decoder import Decoder
 import torch
 import torch.nn as nn
-
+### for computational graph
+from torchviz import make_dot
 class Autoencoder(nn.Module):
     def __init__(self, latent_dim =100):
         super(Autoencoder, self).__init__()  
@@ -24,6 +25,6 @@ if __name__ == "__main__":
 
     with torch.no_grad():  # Disable gradient calculation during inference
         output = model(tensor_batched)#encoder(tensor)
-
+        make_dot(output, params=dict(model.named_parameters()))
     # Print the shape of the output vector
     print("Output shape:", output.shape)
