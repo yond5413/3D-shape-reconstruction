@@ -25,6 +25,7 @@ if __name__ == "__main__":
 
     with torch.no_grad():  # Disable gradient calculation during inference
         output = model(tensor_batched)#encoder(tensor)
-        make_dot(output, params=dict(model.named_parameters()))
+        dot = make_dot(output, params=dict(model.named_parameters()))
+        dot.render("model_graph")
     # Print the shape of the output vector
     print("Output shape:", output.shape)
