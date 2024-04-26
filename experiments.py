@@ -135,8 +135,6 @@ if __name__ == "__main__":
         model.load_state_dict(torch.load(path))
         pass
     model.to(device)
-    for name, param in model.named_parameters():
-        print(f"{name}: requires_grad={param.requires_grad}")
     opt = optimizer_selection(model,args.opt,args.lr)
     ##################################
     print('==> Preparing data..')

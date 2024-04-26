@@ -28,6 +28,7 @@ class Decoder(nn.Module):
         self.conv9 = nn.ConvTranspose3d(4, 1, kernel_size=4, stride=1, padding=0, bias=False)     # No further upsampling, adjust kernel and stride
         # Activation function
         self.relu = nn.ReLU()
+        self.sigmoud = nn.Sigmoid()
      def forward(self,x):
         # Input shape: (batch_size, latent_dim)
         x = x.view(-1, self.latent_dim, 1, 1, 1)  # Reshape to (batch_size, latent_dim, 1, 1, 1)
@@ -42,6 +43,7 @@ class Decoder(nn.Module):
         x = self.relu(self.conv7(x))  # Output shape: (batch_size, 8, 128, 128, 128)
         x = self.relu(self.conv8(x))  # Output shape: (batch_size, 4, 256, 256, 256)
         x = self.conv9(x)
+        x = self.sigmoid(x)
         ### cropping?
         x = x[:, :, :256, :256, :256]
         

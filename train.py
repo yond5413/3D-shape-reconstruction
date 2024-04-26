@@ -61,7 +61,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
         device_ids = list(range(num_gpus))
         model = nn.DataParallel(model,device_ids)
     #########################
-    criterion = VoxelIoULoss()
+    criterion = nn.BCELoss()#nn.CrossEntropyLoss()#VoxelIoULoss()
     
     for epoch in range(num_epochs):
         if epoch ==0 and (num_gpus>0):
