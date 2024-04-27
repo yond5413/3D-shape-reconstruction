@@ -61,9 +61,9 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
         device_ids = list(range(num_gpus))
         model = nn.DataParallel(model,device_ids)
     #########################
-    #criterion = nn.BCELoss()#nn.CrossEntropyLoss()#VoxelIoULoss()
+    criterion = nn.BCELoss()#nn.CrossEntropyLoss()#VoxelIoULoss()
     #criterion = VoxelIoULoss()
-    criterion = nn.CrossEntropyLoss
+    #criterion = nn.CrossEntropyLoss
     for epoch in range(num_epochs+1):
         if epoch ==0 and (num_gpus>0):
             gpu_warmup(device_ids)
