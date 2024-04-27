@@ -5,7 +5,7 @@ import torch.nn as nn
 ### for computational graph
 
 class Autoencoder(nn.Module):
-    def __init__(self, latent_dim =100):
+    def __init__(self, latent_dim =100):#,threshold = 0.68):
         super(Autoencoder, self).__init__()  
         self.latent_dim = latent_dim
         self.encoder = Encoder(latent_dim=self.latent_dim)
@@ -13,6 +13,10 @@ class Autoencoder(nn.Module):
     def forward(self,x):
         x = self.encoder(x)
         x = self.decoder(x)
+        thresholds = torch.mean(x, dim=(2, 3, 4), keepdim=True) #dim batchsize,1
+        ## mean of each voxel grid for thresholdign 
+        x = torch.where(x >= thresholds, torch.ones_like(x), torch.zeros_like(x))
+        #x = torch.where()
         return x 
 
 if __name__ == "__main__":
