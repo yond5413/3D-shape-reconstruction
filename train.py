@@ -116,7 +116,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                     total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, val_voxel_grids)
                     val_bar.update(1)
                 average_iou_accuracy = total_iou_accuracy / len(val_loader)
-                print(f'Epoch {epoch + 1}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
+                print(f'Epoch {epoch}, Average IoU Accuracy: {average_iou_accuracy:.3f}')
                 #model.train()
             if (epoch%5 ==0) or ((epoch+1)==num_epochs):
                 ### save model somewhere 
