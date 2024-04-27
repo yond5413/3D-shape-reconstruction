@@ -1,2 +1,46 @@
-def test():
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import numpy as np
+from tqdm import tqdm
+
+def evaluate_voxel_prediction(prediction, gt):
+    """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
+    intersection = torch.sum(torch.logical_and(prediction, gt).float())#np.sum(np.logical_and(prediction, gt))
+    union = torch.sum(torch.logical_or(prediction, gt).float())#np.sum(np.logical_or(prediction, gt))
+    IoU = intersection / (union + 1e-6)  # Adding epsilon to avoid division by zero
+    return IoU
+def calculate_voxel_iou_accuracy(predictions, targets):
+    total_iou = 0
+    for prediction, target in zip(predictions, targets):
+        total_iou += evaluate_voxel_prediction(prediction, target)
+    average_iou = total_iou / len(predictions)
+    return average_iou
+############# saem as train.py###########
+
+#### main function for work flow
+def eval(model,test_loader,configs):
+    ### TODO
+    ### add test function
+    ### -> have it return best predicitons
+    ### plot and save best results
     pass
+
+##### test runs test loop
+'''
+will return best predicitons and compare with ground truth in plots
+'''
+def test(model,test_loader,configs):
+    bar = tqdm(total=len(test_loader))
+    with torch.no_grad():
+        model.eval()
+        total_iou_accuracy = 0
+        for inputs, voxel_grids in test_loader:
+            inputs = inputs.to(configs.device)
+            voxel_grids = voxel_grids.to(configs.device)
+            outputs = model(inputs)
+            predictions = outputs
+            total_iou_accuracy += calculate_voxel_iou_accuracy(predictions, voxel_grids)
+            bar.update(1)
+        average_iou_accuracy = total_iou_accuracy / len(test_loader)
+        print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
