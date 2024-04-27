@@ -63,7 +63,7 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
     #########################
     #criterion = nn.BCELoss()#nn.CrossEntropyLoss()#VoxelIoULoss()
     criterion = VoxelIoULoss()
-    for epoch in range(num_epochs):
+    for epoch in range(num_epochs+1):
         if epoch ==0 and (num_gpus>0):
             gpu_warmup(device_ids)
         else:
@@ -99,11 +99,8 @@ def train(model,num_epochs,train_loader,val_loader,optimizer,configs,device):
                 progress_bar.update(1)
                 running_loss += loss.item()
                 if i % 100 == 99:  # Print every 100 mini-batches
-                    print(f'[Epoch {epoch + 1}, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
+                    print(f'[Epoch {epoch }, Batch {i + 1}] Loss: {running_loss / 100:.3f}')
                     running_loss = 0.0
-                # Clean up GPU memory
-            del input, voxel_grids, outputs, loss
-            torch.cuda.empty_cache()
             print("Validation Now!!!")
             # Evaluation after each epoch
             val_bar = tqdm(total=len(val_loader))
