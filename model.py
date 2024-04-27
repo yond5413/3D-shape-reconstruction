@@ -29,3 +29,4 @@ if __name__ == "__main__":
         
     # Print the shape of the output vector
     print("Output shape:", output.shape)
+    print(output)
