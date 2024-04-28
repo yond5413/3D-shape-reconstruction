@@ -31,6 +31,7 @@ def calculate_voxel_iou_accuracy(predictions, targets):
         total_iou += evaluate_voxel_prediction(prediction, target)
     average_iou = total_iou / len(predictions)
     return average_iou
+
 def gpu_warmup(device_ids):
     print(f"GPU(s) warmups: {len(device_ids)}")
     model = nn.Sequential(

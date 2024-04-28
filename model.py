@@ -13,9 +13,9 @@ class Autoencoder(nn.Module):
     def forward(self,x):
         x = self.encoder(x)
         x = self.decoder(x)
-        thresholds = torch.mean(x, dim=(2, 3, 4), keepdim=True) #dim batchsize,1
+        #thresholds = torch.mean(x, dim=(2, 3, 4), keepdim=True) #dim batchsize,1
         ## mean of each voxel grid for thresholdign 
-        x = torch.where(x >= thresholds, torch.ones_like(x), torch.zeros_like(x))
+        #x = torch.where(x >= thresholds, torch.ones_like(x), torch.zeros_like(x))
         #x = torch.where()
         return x 
 
