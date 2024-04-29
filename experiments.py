@@ -145,16 +145,19 @@ if __name__ == "__main__":
         path = 'model.pth'
         print("loading "+path)
         model = Autoencoder(latent_dim=args.latent_dim)
-        model.load_state_dict(torch.load(path))
-        
+        checkpoint = torch.load(path)
+        model_state_dict = checkpoint['model_state_dict']
+        model.load_state_dict(model_state_dict)
+        print("Done loading!!!!")
     
     model.to(device)
     opt = optimizer_selection(model,args.opt,args.lr)
     ##################################
     print('==> Preparing data..')
     train_loader,val_loader,test_loader = get_dataloaders(args)
-    print("Beginning Trainning")
     if args.train:
+        print("Beginning Trainning")
         train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args,device = device)
     if args.test and (not args.new_model):
+        print("Time for testing!!!")
         Eval(model,test_loader,args)
