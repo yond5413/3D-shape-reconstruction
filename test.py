@@ -24,6 +24,9 @@ def Eval(model,test_loader,configs):
     ### add test function
     ### -> have it return best predicitons
     ### plot and save best results
+    if torch.cuda.device_count() > 1:
+        model = nn.DataParallel(model)
+    model.eval()
     top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices =test(model,test_loader,configs)
     #top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
     for i in range(0,5):
@@ -43,7 +46,7 @@ def test(model,test_loader,configs):
     with torch.no_grad():
         model.eval()
         total_iou_accuracy = 0
-        for i, (inputs, voxel_grids) in test_loader:
+        for i, (inputs, voxel_grids) in enumerate(test_loader):
             inputs = inputs.to(configs.device)
             voxel_grids = voxel_grids.to(configs.device)
             outputs = model(inputs)
