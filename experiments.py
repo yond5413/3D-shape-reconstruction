@@ -161,3 +161,5 @@ if __name__ == "__main__":
     if args.test and (not args.new_model):
         print("Time for testing!!!")
         Eval(model,test_loader,args)
+    ## when training new model batch size 20 was the limit
+    ## for testing 12 seemed okay
