@@ -24,8 +24,10 @@ def Eval(model,test_loader,configs):
     ### add test function
     ### -> have it return best predicitons
     ### plot and save best results
-    if torch.cuda.device_count() > 1:
-        model = nn.DataParallel(model)
+    num_gpus = torch.cuda.device_count()
+    if num_gpus> 1:
+        device_ids = list(range(num_gpus))
+        model = nn.DataParallel(model,device_ids)
     model.eval()
     top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices =test(model,test_loader,configs)
     #top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
