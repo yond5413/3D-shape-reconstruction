@@ -10,7 +10,7 @@ import argparse
 #######
 from model import Autoencoder
 from train import train
-from test import test
+from test import Eval
 from shapenet_loading import ShapeNetDataset
 from Shapenet_partial_loading import ShapeNetDataset_partial
 ########
@@ -125,11 +125,14 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers',default= 2, type= int, help = "dataloader workers")
     parser.add_argument('--data_path',default="./datasets", type= str, help = "data path")
     parser.add_argument('--opt', default ='adam',type = str ,help = "optimzer")
-    parser.add_argument('--new_model', default =True,type = bool ,help = "new_model" )
+    parser.add_argument('--new_model', default =False,type = bool ,help = "new_model" )
     parser.add_argument('--latent_dim', default =100,type = int ,help = "new_model" )
     parser.add_argument('--epochs', default =50,type = int ,help = "number of epochs" )
     parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
     parser.add_argument('--dataset_partition', default =(1/12),type = float ,help = "amount of training data used")
+    parser.add_argument('--train',default=False,type=bool,help="Training")
+    parser.add_argument('--eval',default=True,type=bool,help="Test")
+    
     args = parser.parse_args()
     ## batch-size 20 and num-worker 3 seems to be optimal for performance for speed 
     device = args.device
@@ -150,5 +153,7 @@ if __name__ == "__main__":
     print('==> Preparing data..')
     train_loader,val_loader,test_loader = get_dataloaders(args)
     print("Beginning Trainning")
-    train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args,device = device)
-    
+    if args.train:
+        train(model=model,num_epochs=args.epochs,train_loader=train_loader,val_loader=val_loader,optimizer=opt,configs= args,device = device)
+    if args.test and (not args.new_model):
+        Eval(model,test_loader,args)
