@@ -36,6 +36,7 @@ def Eval(model,test_loader,configs):
         i = top5_iou_indices[x]
         filename = f"best_{x}th"
         plot_and_save_top_prediction(top_prediction=top5_predictions[i],top_ground_truth=top5_ground_truths[i],file_name=filename)
+    print("Images saved from best outputs goodbye ")
 
 '''
 will return best predicitons and compare with ground truth in plots
