@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
-
+import pyvista as pv
 def evaluate_voxel_prediction(prediction, gt):
     """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
     intersection = torch.sum(torch.logical_and(prediction, gt).float())#np.sum(np.logical_and(prediction, gt))
@@ -24,9 +24,10 @@ def Eval(model,test_loader,configs):
     ### add test function
     ### -> have it return best predicitons
     ### plot and save best results
-    test(model,test_loader,configs)
-
-##### test runs test loop
+    top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices =test(model,test_loader,configs)
+    #top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
+    for i in range(0,5):
+        pass
 '''
 will return best predicitons and compare with ground truth in plots
 '''
@@ -76,3 +77,25 @@ def test(model,test_loader,configs):
         average_iou_accuracy = total_iou_accuracy / len(test_loader)
         print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
+def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
+    # Create PyVista mesh for top prediction
+    top_pred_mesh = pv.wrap(top_prediction.cpu().numpy())
+    
+    # Create PyVista mesh for corresponding ground truth
+    top_gt_mesh = pv.wrap(top_ground_truth.cpu().numpy())
+    
+    # Create a PyVista plotter
+    p = pv.Plotter(notebook=False)
+    
+    # Add top prediction mesh to the plotter
+    p.add_mesh(top_pred_mesh, color='red', opacity=0.5, lighting=True)
+    
+    # Add corresponding ground truth mesh to the plotter
+    p.add_mesh(top_gt_mesh, color='blue', opacity=0.5, lighting=True)
+    
+    # Set up camera position and view
+    p.camera_position = 'xy'
+    p.enable_eye_dome_lighting()
+    
+    # Save the plot as an image
+    p.show(screenshot=file_name)

@@ -143,6 +143,7 @@ if __name__ == "__main__":
     else:
         #### load from 'model.pth'
         path = 'model.pth'
+        print("loading "+path)
         model = Autoencoder(latent_dim=args.latent_dim)
         model.load_state_dict(torch.load(path))
         
