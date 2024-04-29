@@ -131,7 +131,7 @@ if __name__ == "__main__":
     parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
     parser.add_argument('--dataset_partition', default =(1/12),type = float ,help = "amount of training data used")
     parser.add_argument('--train',default=False,type=bool,help="Training")
-    parser.add_argument('--eval',default=True,type=bool,help="Test")
+    parser.add_argument('--test',default=True,type=bool,help="Test")
     
     args = parser.parse_args()
     ## batch-size 20 and num-worker 3 seems to be optimal for performance for speed 
