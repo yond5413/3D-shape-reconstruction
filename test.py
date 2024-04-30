@@ -37,6 +37,7 @@ def Eval(model,test_loader,configs):
         i = top5_iou_indices[x]
         print(f"i: {i}")
         filename = f"best_{x}th"
+        print(f"{filename} for gt and pred are being generated.....")
         plot_and_save_top_prediction(top_prediction=top5_predictions[x],top_ground_truth=top5_ground_truths[x],file_name=filename)
     print("Images saved from best outputs goodbye ")
 
