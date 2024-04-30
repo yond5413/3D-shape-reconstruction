@@ -90,6 +90,9 @@ def test(model,test_loader,configs):
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     # Create PyVista mesh for top prediction
+    print(top_prediction.size())
+    print(type(top_prediction.cpu().numpy()))
+    print(type(top_prediction.cpu().numpy()).shape)
     top_pred_mesh = pv.wrap(top_prediction.cpu().numpy())
     
     # Create PyVista mesh for corresponding ground truth
