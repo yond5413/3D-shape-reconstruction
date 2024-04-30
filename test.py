@@ -81,8 +81,8 @@ def test(model,test_loader,configs):
                         top5_ground_truths[min_iou_index] = voxel_grids[i]
                         top5_iou_scores[min_iou_index] = iou
                         top5_iou_indices[min_iou_index] = i
-            if x%100 == 0:
-                val = total_iou_accuracy/i
+            if x%100 == 0 and x!=0:
+                val = total_iou_accuracy/x
                 print(f'i= {x}, Average IoU Accuracy: {val:.3f}')
             bar.update(1)
         average_iou_accuracy = total_iou_accuracy / len(test_loader)
