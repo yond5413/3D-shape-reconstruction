@@ -5,3 +5,4 @@ numpy
 torchvision == 0.16
 matplotlib
 numpy-stl
+tqdm

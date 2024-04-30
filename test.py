@@ -100,7 +100,7 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     gt_voxels = gt_np[0]
     pred_voxels = top_pred_np[0]
     # Create a new figure
-    vertices, faces = mesh.numpy_to_stl(gt_voxels)
+    vertices, faces = mesh.BaseMesh(gt_voxels, remove_empty_areas=False)#mesh.numpy_to_stl(gt_voxels)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -122,7 +122,7 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     # Save the plot as an image
     plt.savefig(pred_name)
     print("First done ")
-    vertices, faces = mesh.numpy_to_stl(pred_voxels)
+    vertices, faces = mesh.BaseMesh(pred_voxels, remove_empty_areas=False)#mesh.numpy_to_stl(pred_voxels)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
