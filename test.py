@@ -5,6 +5,8 @@ import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt 
 from mpl_toolkits.mplot3d import Axes3D 
+from stl import mesh
+from mpl_toolkits import mplot3d
 import os
 def evaluate_voxel_prediction(prediction, gt):
     """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
@@ -94,56 +96,51 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     print(top_prediction.size())
     print("saving plots currently be patient")
     top_pred_np = top_prediction.cpu().numpy()
-    # Create a new figure
-    fig = plt.figure()
-    # Add a 3D subplot to the figure
-    ax = fig.add_subplot(111, projection='3d')
-    # Generate indices for a 3D grid
-    x, y, z = np.indices((256, 256, 256))
-    # Create a boolean array to define which voxels to plot
-    voxels = (x == y) | (y == z)
-    # Plot the voxels
-    ax.voxels(voxels)
-    # Set labels for the axes
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    # Show the plot
-    #plt.show()
-    # Plot top prediction
-    #plt.imshow(top_pred_np)
-    # Set title
-    plt.title('Top Prediction')
-    # Save the plot
-    pred_file = "pred_"+file_name
-    plt.savefig(file_name)
-    # Show the plot
-    #plt.show()
-    print("saved first figure")
     gt_np = top_ground_truth.cpu().numpy()
+    gt_voxels = gt_np[0]
+    pred_voxels = top_pred_np[0]
     # Create a new figure
+    vertices, faces = mesh.numpy_to_stl(gt_voxels)
     fig = plt.figure()
-    # Add a 3D subplot to the figure
     ax = fig.add_subplot(111, projection='3d')
-    # Generate indices for a 3D grid
-    x, y, z = np.indices((256, 256, 256))
-    # Create a boolean array to define which voxels to plot
-    voxels = (x == y) | (y == z)
-    # Plot the voxels
-    ax.voxels(voxels)
-    # Set labels for the axes
+
+    # Plot the mesh
+    mesh_plot = mplot3d.art3d.Poly3DCollection(vertices[faces], alpha=0.1)
+    ax.add_collection3d(mesh_plot)
+
+    # Set the limits of the plot
+    ax.set_xlim([0, gt_voxels.shape[0]])
+    ax.set_ylim([0, gt_voxels.shape[1]])
+    ax.set_zlim([0, gt_voxels.shape[2]])
+
+    # Set labels
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    # Show the plot
-    #plt.show()
-    # Plot top prediction
-    plt.imshow(gt_np)
-    # Set title
-    plt.title('Top Ground Truth')
-    # Save the plot
-    pred_file = "GT_"+file_name
-    plt.savefig(file_name)
-    print("saved second!!")
-    # Show the plot
-    #plt.show()
+    ax.set_title('3D Voxel Grid Visualization for Ground Truth')
+    pred_name = "gt_"+file_name
+    # Save the plot as an image
+    plt.savefig(pred_name)
+    print("First done ")
+    vertices, faces = mesh.numpy_to_stl(pred_voxels)
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Plot the mesh
+    mesh_plot = mplot3d.art3d.Poly3DCollection(vertices[faces], alpha=0.1)
+    ax.add_collection3d(mesh_plot)
+
+    # Set the limits of the plot
+    ax.set_xlim([0, pred_voxels.shape[0]])
+    ax.set_ylim([0, pred_voxels.shape[1]])
+    ax.set_zlim([0, pred_voxels.shape[2]])
+
+    # Set labels
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.set_title('3D Voxel Grid Visualization for prediction')
+    pred_name = "pred_"+file_name
+    # Save the plot as an image
+    plt.savefig(pred_name)
+    print("second done")
