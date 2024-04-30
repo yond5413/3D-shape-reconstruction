@@ -3,7 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
-import pyvista as pv
+import matplotlib.pyplot as plt 
+from mpl_toolkits.mplot3d import Axes3D 
 import os
 def evaluate_voxel_prediction(prediction, gt):
     """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
@@ -89,27 +90,56 @@ def test(model,test_loader,configs):
         print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
-    # Create PyVista mesh for top prediction
     print(top_prediction.size())
-    print(type(top_prediction.cpu().numpy()))
-    print(type(top_prediction.cpu().numpy()).shape)
-    top_pred_mesh = pv.wrap(top_prediction.cpu().numpy())
-    
-    # Create PyVista mesh for corresponding ground truth
-    top_gt_mesh = pv.wrap(top_ground_truth.cpu().numpy())
-    
-    # Create a PyVista plotter
-    p = pv.Plotter(notebook=False)
-    
-    # Add top prediction mesh to the plotter
-    p.add_mesh(top_pred_mesh, color='red', opacity=0.5, lighting=True)
-    
-    # Add corresponding ground truth mesh to the plotter
-    p.add_mesh(top_gt_mesh, color='blue', opacity=0.5, lighting=True)
-    
-    # Set up camera position and view
-    p.camera_position = 'xy'
-    p.enable_eye_dome_lighting()
-    
-    # Save the plot as an image
-    p.show(screenshot=file_name)
+    top_pred_np = top_prediction.cpu().numpy()
+    # Create a new figure
+    fig = plt.figure()
+    # Add a 3D subplot to the figure
+    ax = fig.add_subplot(111, projection='3d')
+    # Generate indices for a 3D grid
+    x, y, z = np.indices((256, 256, 256))
+    # Create a boolean array to define which voxels to plot
+    voxels = (x == y) | (y == z)
+    # Plot the voxels
+    ax.voxels(voxels)
+    # Set labels for the axes
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    # Show the plot
+    plt.show()
+    # Plot top prediction
+    plt.imshow(top_pred_np)
+    # Set title
+    plt.title('Top Prediction')
+    # Save the plot
+    pred_file = "pred_"+file_name
+    plt.savefig(file_name)
+    # Show the plot
+    plt.show()
+    gt_np = top_ground_truth.cpu().numpy()
+    # Create a new figure
+    fig = plt.figure()
+    # Add a 3D subplot to the figure
+    ax = fig.add_subplot(111, projection='3d')
+    # Generate indices for a 3D grid
+    x, y, z = np.indices((256, 256, 256))
+    # Create a boolean array to define which voxels to plot
+    voxels = (x == y) | (y == z)
+    # Plot the voxels
+    ax.voxels(voxels)
+    # Set labels for the axes
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    # Show the plot
+    plt.show()
+    # Plot top prediction
+    plt.imshow(gt_np)
+    # Set title
+    plt.title('Top Ground Truth')
+    # Save the plot
+    pred_file = "GT_"+file_name
+    plt.savefig(file_name)
+    # Show the plot
+    plt.show()

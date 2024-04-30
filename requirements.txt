@@ -3,4 +3,4 @@ scipy
 Pillow
 numpy 
 torchvision == 0.16
-pyvista
+matplotlib
