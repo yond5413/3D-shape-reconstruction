@@ -92,6 +92,7 @@ def test(model,test_loader,configs):
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     print(top_prediction.size())
+    print("saving plots currently be patient")
     top_pred_np = top_prediction.cpu().numpy()
     # Create a new figure
     fig = plt.figure()
@@ -108,16 +109,17 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     # Show the plot
-    plt.show()
+    #plt.show()
     # Plot top prediction
-    plt.imshow(top_pred_np)
+    #plt.imshow(top_pred_np)
     # Set title
     plt.title('Top Prediction')
     # Save the plot
     pred_file = "pred_"+file_name
     plt.savefig(file_name)
     # Show the plot
-    plt.show()
+    #plt.show()
+    print("saved first figure")
     gt_np = top_ground_truth.cpu().numpy()
     # Create a new figure
     fig = plt.figure()
@@ -134,7 +136,7 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     # Show the plot
-    plt.show()
+    #plt.show()
     # Plot top prediction
     plt.imshow(gt_np)
     # Set title
@@ -142,5 +144,6 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     # Save the plot
     pred_file = "GT_"+file_name
     plt.savefig(file_name)
+    print("saved second!!")
     # Show the plot
-    plt.show()
+    #plt.show()
