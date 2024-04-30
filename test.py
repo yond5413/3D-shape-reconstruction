@@ -54,7 +54,7 @@ def test(model,test_loader,configs):
     with torch.no_grad():
         model.eval()
         total_iou_accuracy = 0
-        for i, (inputs, voxel_grids) in enumerate(test_loader):
+        for x, (inputs, voxel_grids) in enumerate(test_loader):
             inputs = inputs.to(configs.device)
             voxel_grids = voxel_grids.to(configs.device)
             outputs = model(inputs)
@@ -81,9 +81,9 @@ def test(model,test_loader,configs):
                         top5_ground_truths[min_iou_index] = voxel_grids[i]
                         top5_iou_scores[min_iou_index] = iou
                         top5_iou_indices[min_iou_index] = i
-            if i%100 == 0:
+            if x%100 == 0:
                 val = total_iou_accuracy/i
-                print(f'i= {i}, Average IoU Accuracy: {val:.3f}')
+                print(f'i= {x}, Average IoU Accuracy: {val:.3f}')
             bar.update(1)
         average_iou_accuracy = total_iou_accuracy / len(test_loader)
         print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
