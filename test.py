@@ -34,8 +34,9 @@ def Eval(model,test_loader,configs):
     #top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
     for x in range(0,5):
         i = top5_iou_indices[x]
+        print(f"i: {i}")
         filename = f"best_{x}th"
-        plot_and_save_top_prediction(top_prediction=top5_predictions[i],top_ground_truth=top5_ground_truths[i],file_name=filename)
+        plot_and_save_top_prediction(top_prediction=top5_predictions[x],top_ground_truth=top5_ground_truths[x],file_name=filename)
     print("Images saved from best outputs goodbye ")
 
 '''
