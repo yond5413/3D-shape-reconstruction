@@ -83,7 +83,7 @@ def test(model,test_loader,configs):
                         top5_iou_indices[min_iou_index] = i
             if i%100 == 0:
                 val = total_iou_accuracy/i
-                print(f'Average IoU Accuracy: {val:.3f}')
+                print(f'i= {i}, Average IoU Accuracy: {val:.3f}')
             bar.update(1)
         average_iou_accuracy = total_iou_accuracy / len(test_loader)
         print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
