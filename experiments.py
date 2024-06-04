@@ -146,7 +146,7 @@ if __name__ == "__main__":
         path = 'model.pth'
         print("loading "+path)
         model = Autoencoder(latent_dim=args.latent_dim)
-        checkpoint = torch.load(path)
+        checkpoint = torch.load(path, map_location=device)#torch.load(path)
         model_state_dict = checkpoint['model_state_dict']
         model.load_state_dict(model_state_dict)
         print("Done loading!!!!")
