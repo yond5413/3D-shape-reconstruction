@@ -138,6 +138,7 @@ if __name__ == "__main__":
     device = args.device
     if device == "cuda":
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print(device)
     if args.new_model:
         model = Autoencoder(latent_dim=args.latent_dim)
     else:
