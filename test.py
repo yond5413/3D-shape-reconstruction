@@ -3,11 +3,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from tqdm import tqdm
-import matplotlib.pyplot as plt 
-from mpl_toolkits.mplot3d import Axes3D 
-from stl import mesh
-from mpl_toolkits import mplot3d
+import matplotlib.pyplot as plt #
+from mpl_toolkits.mplot3d import Axes3D# 
+from stl import mesh#
+from mpl_toolkits import mplot3d#
+## delete commented ones 
 import os
+import open3d as o3d
 def evaluate_voxel_prediction(prediction, gt):
     """The prediction and gt are 3 dim voxels. Each voxel has values 1 or 0"""
     intersection = torch.sum(torch.logical_and(prediction, gt).float())#np.sum(np.logical_and(prediction, gt))
@@ -92,55 +94,41 @@ def test(model,test_loader,configs):
         average_iou_accuracy = total_iou_accuracy / len(test_loader)
         print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
+
+def create_voxel_grid(binary_tensor, voxel_size=1.0):
+    indices = torch.nonzero(binary_tensor).float()
+    z_coords = indices[:, 2]
+    norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
+    colormap = plt.get_cmap("viridis")
+    colors = colormap(norm_z.numpy())[:, :3]
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(indices.numpy())
+    pcd.colors = o3d.utility.Vector3dVector(colors)
+    voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
+    return voxel_grid
+
 def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
-    print(top_prediction.size())
-    print("saving plots currently be patient")
-    top_pred_np = top_prediction.cpu().numpy()
-    gt_np = top_ground_truth.cpu().numpy()
-    gt_voxels = gt_np[0]
-    pred_voxels = top_pred_np[0]
-    # Create a new figure
-    vertices, faces = mesh.BaseMesh(gt_voxels, remove_empty_areas=False)#mesh.numpy_to_stl(gt_voxels)
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
 
-    # Plot the mesh
-    mesh_plot = mplot3d.art3d.Poly3DCollection(vertices[faces], alpha=0.1)
-    ax.add_collection3d(mesh_plot)
-
-    # Set the limits of the plot
-    ax.set_xlim([0, gt_voxels.shape[0]])
-    ax.set_ylim([0, gt_voxels.shape[1]])
-    ax.set_zlim([0, gt_voxels.shape[2]])
-
-    # Set labels
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    ax.set_title('3D Voxel Grid Visualization for Ground Truth')
-    pred_name = "gt_"+file_name
-    # Save the plot as an image
-    plt.savefig(pred_name)
-    print("First done ")
-    vertices, faces = mesh.BaseMesh(pred_voxels, remove_empty_areas=False)#mesh.numpy_to_stl(pred_voxels)
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    # Plot the mesh
-    mesh_plot = mplot3d.art3d.Poly3DCollection(vertices[faces], alpha=0.1)
-    ax.add_collection3d(mesh_plot)
-
-    # Set the limits of the plot
-    ax.set_xlim([0, pred_voxels.shape[0]])
-    ax.set_ylim([0, pred_voxels.shape[1]])
-    ax.set_zlim([0, pred_voxels.shape[2]])
-
-    # Set labels
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    ax.set_title('3D Voxel Grid Visualization for prediction')
+    ### using open3d rn 
+    voxel_grid1 = create_voxel_grid(top_prediction)
+    vis = o3d.visualization.Visualizer()
+    vis.create_window()
+    vis.add_geometry(voxel_grid1)
+    vis.update_geometry(voxel_grid1)
+    vis.poll_events()
+    vis.update_renderer()
     pred_name = "pred_"+file_name
-    # Save the plot as an image
-    plt.savefig(pred_name)
-    print("second done")
+    vis.capture_screen_image(pred_name+".png")
+    vis.destroy_window()
+    ################################
+    # Create and save the second voxel grid visualization
+    voxel_grid2 = create_voxel_grid(top_ground_truth)
+    vis = o3d.visualization.Visualizer()
+    vis.create_window()
+    vis.add_geometry(voxel_grid2)
+    vis.update_geometry(voxel_grid2)
+    vis.poll_events()
+    vis.update_renderer()
+    gt_name = "gt_"+file_name
+    vis.capture_screen_image(gt_name+".png")
+    vis.destroy_window()
