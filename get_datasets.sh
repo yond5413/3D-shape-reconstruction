@@ -25,12 +25,12 @@ unzip val_voxels.zip
 unzip test_imgs.zip
 unzip test_voxels.zip
 
-mv train_imgs $DESTINATION_DIR
-mv train_voxels $DESTINATION_DIR
-mv val_imgs $DESTINATION_DIR
-mv imgs_voxels $DESTINATION_DIR
-mv test_imgs $DESTINATION_DIR
-mv test $DESTINATION_DIR
+mv train_imgs "$DESTINATION_DIR"
+mv train_voxels "$DESTINATION_DIR"
+mv val_imgs "$DESTINATION_DIR"
+mv imgs_voxels "$DESTINATION_DIR"
+mv test_imgs "$DESTINATION_DIR"
+mv test "$DESTINATION_DIR"
 
 echo "unzipped and sent data to new directory: datasets"
 
