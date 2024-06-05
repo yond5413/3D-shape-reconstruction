@@ -96,13 +96,13 @@ def test(model,test_loader,configs):
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 
 def create_voxel_grid(binary_tensor, voxel_size=1.0):
-    indices = torch.nonzero(binary_tensor).float()
+    indices = torch.nonzero(binary_tensor).cpu().float()
     z_coords = indices[:, 2]
     norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
     colormap = plt.get_cmap("viridis")
     colors = colormap(norm_z.cpu().numpy())[:, :3]
     pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(indices.cpu().numpy())
+    pcd.points = o3d.utility.Vector3dVector(indices.numpy())
     pcd.colors = o3d.utility.Vector3dVector(colors)
     voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
     return voxel_grid
