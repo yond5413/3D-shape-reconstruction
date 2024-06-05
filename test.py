@@ -107,6 +107,7 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     #indices_numpy = indices.numpy()
     indices = binary_tensor.cpu().float().numpy()
     #print(f"type indices_numpu:{type(indices_numpy)}")
+    print(f"shape: {indices.shape}")
     pcd.points = o3d.utility.Vector3dVector(indices)
     #pcd.points = o3d.utility.Vector3dVector(indices_numpy)
     #pcd.colors = o3d.utility.Vector3dVector(colors)
