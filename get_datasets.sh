@@ -28,7 +28,7 @@ unzip test_voxels.zip
 mv train_imgs datasets #"$DESTINATION_DIR"
 mv train_voxels datasets #"$DESTINATION_DIR"
 mv val_imgs datasets #"$DESTINATION_DIR"
-mv imgs_voxels datasets #"$DESTINATION_DIR"
+mv val_voxels datasets #"$DESTINATION_DIR"
 mv test_imgs datasets #"$DESTINATION_DIR"
 mv test datasets #"$DESTINATION_DIR"
 
