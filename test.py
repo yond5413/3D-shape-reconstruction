@@ -97,6 +97,7 @@ def test(model,test_loader,configs):
 
 def create_voxel_grid(binary_tensor, voxel_size=1.0):
     indices = torch.nonzero(binary_tensor).cpu().float()
+    print(f"type indices:{type(indices)}")
     z_coords = indices[:, 2]
     norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
     norm_z = norm_z.cpu()
