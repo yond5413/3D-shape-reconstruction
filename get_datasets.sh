@@ -1,12 +1,12 @@
 #!/bin/bash
 
 ShapeNet_URL = https://shapenet.cs.stanford.edu/iccv17/recon3d
-wget --no-check-certificate "$ShapeNet_URL/train_imgs.zip"
-wget --no-check-certificate "$ShapeNet_URL/train_voxels.zip"
-wget --no-check-certificate "$ShapeNet_URL/test_imgs.zip"
-wget --no-check-certificate "$ShapeNet_URL/test_voxels.zip"
-wget --no-check-certificate "$ShapeNet_URL/val_imgs.zip"
-wget --no-check-certificate "$ShapeNet_URL/val_voxels.zip"
+wget --no-check-certificate $ShapeNet_URL"/train_imgs.zip"
+wget --no-check-certificate $ShapeNet_URL"/train_voxels.zip"
+wget --no-check-certificate $ShapeNet_URL"/test_imgs.zip"
+wget --no-check-certificate $ShapeNet_URL"/test_voxels.zip"
+wget --no-check-certificate $ShapeNet_URL"/val_imgs.zip"
+wget --no-check-certificate $ShapeNet_URL"/val_voxels.zip"
 
 echo "Downloaded zip files from Shapenet site..."
 mkdir datasets
