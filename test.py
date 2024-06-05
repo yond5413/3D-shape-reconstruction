@@ -104,7 +104,9 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     colormap = plt.get_cmap("viridis")
     colors = colormap(norm_z.numpy())[:, :3]
     pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(indices.numpy())
+    indices_numpy = indices.numpy()
+    print(f"type indices_numpu:{type(indices_numpy)}")
+    pcd.points = o3d.utility.Vector3dVector(indices_numpy)
     pcd.colors = o3d.utility.Vector3dVector(colors)
     voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
     return voxel_grid
