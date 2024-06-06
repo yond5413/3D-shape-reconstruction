@@ -138,8 +138,8 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0,file='image.png'):
     
     # Create a VoxelGrid from the PointCloud
     voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
-    width = 320#800
-    height =240# 600
+    width = 256#320#800
+    height =256#240# 600
     print(f"w: {width}, h: {height}")
     renderer = o3d.visualization.rendering.OffscreenRenderer(width, height)
     renderer.scene.add_geometry("voxel_grid", voxel_grid, o3d.visualization.rendering.MaterialRecord())
