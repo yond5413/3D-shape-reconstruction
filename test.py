@@ -95,7 +95,7 @@ def test(model,test_loader,configs):
         print(f' Average IoU Accuracy: {average_iou_accuracy:.3f}')
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 
-def create_voxel_grid(binary_tensor, voxel_size=1.0):
+def create_voxel_grid(binary_tensor, voxel_size=1.0,file='image.png'):
     #indices = torch.nonzero(binary_tensor).cpu().float()
     binary_array = binary_tensor.cpu().numpy()
     ################################
@@ -138,8 +138,21 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     
     # Create a VoxelGrid from the PointCloud
     voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
-    
-    return voxel_grid
+    width = 800
+    height = 600
+    renderer = o3d.visualization.rendering.OffscreenRenderer(width, height)
+    renderer.scene.add_geometry("voxel_grid", voxel_grid, o3d.visualization.rendering.MaterialRecord())
+    # Set camera parameters
+    center = np.array([128, 128, 128])
+    eye = center + np.array([128, 128, 256])
+    up = np.array([0, 1, 0])
+    renderer.scene.camera.look_at(center, eye, up)
+    renderer.scene.camera.set_projection(60.0, width / height, 0.1, 5000.0)
+
+    # Step 7: Capture the rendered image
+    image = renderer.render_to_image()
+    o3d.io.write_image(file, image)
+    #return voxel_grid
     '''#indices = torch.nonzero(binary_tensor).cpu().float()
     #print(f"type indices:{type(indices)}")
     #z_coords = indices[:, 2]
@@ -163,10 +176,17 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
 def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
 
     ### using open3d rn 
-    voxel_grid1 = create_voxel_grid(top_prediction)
+    #voxel_grid1 = create_voxel_grid(top_prediction)
     print('getting first one')
-    vis = o3d.visualization.Visualizer()
-
+    pred_name = "pred_"+file_name+'.png'
+    gt_name = "gt_"+file_name+'.png'
+    #image_path = pred_name+".png"#"voxel_grid.png"
+    create_voxel_grid(binary_tensor= top_prediction,file=pred_name)
+    print('done first')
+    print("getting gt now")
+    create_voxel_grid(binary_tensor= top_ground_truth,file=gt_name)
+    print('hopefully done')
+    '''vis = o3d.visualization.Visualizer()
     vis.create_window(visible=False)
     vis.add_geometry(voxel_grid1)
     vis.update_geometry(voxel_grid1)
@@ -174,12 +194,33 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     vis.update_renderer()
     pred_name = "pred_"+file_name
     vis.capture_screen_image(pred_name+".png")
-    vis.destroy_window()
-    print('done first')
+    vis.destroy_window()'''
+    #width = 800
+    #height = 600
+    #renderer = o3d.visualization.rendering.OffscreenRenderer(width, height)
+    #renderer.scene.add_geometry("voxel_grid", voxel_grid1, o3d.visualization.rendering.MaterialRecord())
+    # Set camera parameters
+    #center = np.array([128, 128, 128])
+    #eye = center + np.array([128, 128, 256])
+    #up = np.array([0, 1, 0])
+    #renderer.scene.camera.look_at(center, eye, up)
+    #renderer.scene.camera.set_projection(60.0, width / height, 0.1, 5000.0)
+
+    # Step 7: Capture the rendered image
+    #image = renderer.render_to_image()
+
+    # Step 8: Save the image
+    #pred_name = "pred_"+file_name
+    #image_path = pred_name+".png"#"voxel_grid.png"
+
+    #o3d.io.write_image(image_path, image)
+    #print('done first')
     ################################
     # Create and save the second voxel grid visualization
-    voxel_grid2 = create_voxel_grid(top_ground_truth)
-    vis = o3d.visualization.Visualizer()
+    #voxel_grid2 = create_voxel_grid(top_ground_truth)
+    #print("getting gt now")
+
+    '''vis = o3d.visualization.Visualizer()
     vis.create_window(visible=False)
     vis.add_geometry(voxel_grid2)
     vis.update_geometry(voxel_grid2)
@@ -187,4 +228,4 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     vis.update_renderer()
     gt_name = "gt_"+file_name
     vis.capture_screen_image(gt_name+".png")
-    vis.destroy_window()
+    vis.destroy_window()'''
