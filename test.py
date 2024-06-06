@@ -97,22 +97,21 @@ def test(model,test_loader,configs):
 
 def create_voxel_grid(binary_tensor, voxel_size=1.0):
     indices = torch.nonzero(binary_tensor).cpu().float()
-
     # Normalize z coordinates if needed (commented out)
     # z_coords = indices[:, 2]
     # norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
     # colormap = plt.get_cmap("viridis")
     # colors = colormap(norm_z.numpy())[:, :3]
-    
     # Create a PointCloud object
     pcd = o3d.geometry.PointCloud()
-    
     # Convert indices to a NumPy array
     indices_numpy = indices.numpy()
+    ind = indices_numpy[0]
+    print(f"indices shape: {indices_numpy.shape}")
+    print(f"ind shape: {ind.shape}")
     
     # Set points in the PointCloud
     pcd.points = o3d.utility.Vector3dVector(indices_numpy)
-    
     # Optionally set colors (commented out)
     # pcd.colors = o3d.utility.Vector3dVector(colors)
     
