@@ -106,7 +106,7 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     # Check if the unique values are only 0 and 1
     is_binary = np.array_equal(unique_values, [0, 1])
 
-    #print("Is the tensor binary (method 2)?", is_binary)
+    print("Is the tensor binary (method 2)?", is_binary)
     ################################
 
     indices = np.argwhere(binary_array)
