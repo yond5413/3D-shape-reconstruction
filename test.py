@@ -143,12 +143,12 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0,file='image.png'):
     print(f"w: {width}, h: {height}")
     material = o3d.visualization.rendering.MaterialRecord()
     material.shader = "defaultUnlit"
-    renderer = o3d.visualization.rendering.OffscreenRenderer(width, height,headless=True)
+    renderer = o3d.visualization.rendering.OffscreenRenderer(width, height)#,headless=True)
     renderer.scene.add_geometry("voxel_grid", voxel_grid, material)#o3d.visualization.rendering.MaterialRecord())
     # Set camera parameters
     print('camera stuff')
     center = np.array([128, 128, 128])
-    eye = center + np.array([128, 128, 256])
+    eye = center + np.array([128, 128, 128])
     up = np.array([0, 1, 0])
     renderer.scene.camera.look_at(center, eye, up)
     renderer.scene.camera.set_projection(60.0, width / height, 0.1, 5000.0)
