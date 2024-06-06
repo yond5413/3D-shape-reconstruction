@@ -175,6 +175,7 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
     pred_name = "pred_"+file_name
     vis.capture_screen_image(pred_name+".png")
     vis.destroy_window()
+    print('done first')
     ################################
     # Create and save the second voxel grid visualization
     voxel_grid2 = create_voxel_grid(top_ground_truth)
