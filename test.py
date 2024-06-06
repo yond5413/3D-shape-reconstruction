@@ -140,18 +140,22 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0,file='image.png'):
     voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
     width = 800
     height = 600
+    print('hi')
     renderer = o3d.visualization.rendering.OffscreenRenderer(width, height)
     renderer.scene.add_geometry("voxel_grid", voxel_grid, o3d.visualization.rendering.MaterialRecord())
     # Set camera parameters
+    print('camera stuff')
     center = np.array([128, 128, 128])
     eye = center + np.array([128, 128, 256])
     up = np.array([0, 1, 0])
     renderer.scene.camera.look_at(center, eye, up)
     renderer.scene.camera.set_projection(60.0, width / height, 0.1, 5000.0)
-
+    print('writing ')
     # Step 7: Capture the rendered image
     image = renderer.render_to_image()
     o3d.io.write_image(file, image)
+    # Cleanup
+    del renderer
     #return voxel_grid
     '''#indices = torch.nonzero(binary_tensor).cpu().float()
     #print(f"type indices:{type(indices)}")
