@@ -111,7 +111,8 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     #ind = indices_numpy[0]
     #print(f"indices shape: {indices_numpy.shape}")
     #print(f"ind shape: {ind.shape}")
-    
+    print(f'shape"{binary_array.shape}')
+    print(f'foo shape"{binary_array[0].shape}')
     # Set points in the PointCloud
     pcd.points = o3d.utility.Vector3dVector(indices.astype(np.float64))
     #pcd.points = o3d.utility.Vector3dVector(indices_numpy)
