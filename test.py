@@ -137,12 +137,14 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0,file='image.png'):
     # pcd.colors = o3d.utility.Vector3dVector(colors)
     
     # Create a VoxelGrid from the PointCloud
-    voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size,use_gpu=True)
+    voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size,)
     width = 256#320#800
     height =256#240# 600
     print(f"w: {width}, h: {height}")
+    material = o3d.visualization.rendering.MaterialRecord()
+    material.shader = "defaultUnlit"
     renderer = o3d.visualization.rendering.OffscreenRenderer(width, height,headless=True)
-    renderer.scene.add_geometry("voxel_grid", voxel_grid, o3d.visualization.rendering.MaterialRecord())
+    renderer.scene.add_geometry("voxel_grid", voxel_grid, material)#o3d.visualization.rendering.MaterialRecord())
     # Set camera parameters
     print('camera stuff')
     center = np.array([128, 128, 128])
