@@ -164,7 +164,9 @@ def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
 
     ### using open3d rn 
     voxel_grid1 = create_voxel_grid(top_prediction)
+    print('getting first one')
     vis = o3d.visualization.Visualizer()
+
     vis.create_window(visible=False)
     vis.add_geometry(voxel_grid1)
     vis.update_geometry(voxel_grid1)
