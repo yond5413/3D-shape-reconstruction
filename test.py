@@ -110,7 +110,7 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     print("Is the tensor binary (method 2)?", is_binary)
     ################################
 
-    indices = np.argwhere(binary_array)
+    indices = np.argwhere(binary_array[0])
     
     # Normalize z coordinates if needed (commented out)
     # z_coords = indices[:, 2]
