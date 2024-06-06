@@ -96,7 +96,31 @@ def test(model,test_loader,configs):
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 
 def create_voxel_grid(binary_tensor, voxel_size=1.0):
-    #indices = torch.nonzero(binary_tensor).cpu().float()
+    indices = torch.nonzero(binary_tensor).cpu().float()
+
+    # Normalize z coordinates if needed (commented out)
+    # z_coords = indices[:, 2]
+    # norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
+    # colormap = plt.get_cmap("viridis")
+    # colors = colormap(norm_z.numpy())[:, :3]
+    
+    # Create a PointCloud object
+    pcd = o3d.geometry.PointCloud()
+    
+    # Convert indices to a NumPy array
+    indices_numpy = indices.numpy()
+    
+    # Set points in the PointCloud
+    pcd.points = o3d.utility.Vector3dVector(indices_numpy)
+    
+    # Optionally set colors (commented out)
+    # pcd.colors = o3d.utility.Vector3dVector(colors)
+    
+    # Create a VoxelGrid from the PointCloud
+    voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
+    
+    return voxel_grid
+    '''#indices = torch.nonzero(binary_tensor).cpu().float()
     #print(f"type indices:{type(indices)}")
     #z_coords = indices[:, 2]
     #norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
@@ -114,7 +138,7 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     #pcd.points = o3d.utility.Vector3dVector(indices_numpy)
     #pcd.colors = o3d.utility.Vector3dVector(colors)
     voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size)
-    return voxel_grid
+    return voxel_grid'''
 
 def plot_and_save_top_prediction(top_prediction, top_ground_truth, file_name):
 
