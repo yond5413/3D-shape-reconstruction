@@ -96,7 +96,9 @@ def test(model,test_loader,configs):
     return top5_inputs, top5_predictions, top5_ground_truths, top5_iou_scores, top5_iou_indices
 
 def create_voxel_grid(binary_tensor, voxel_size=1.0):
-    indices = torch.nonzero(binary_tensor).cpu().float()
+    #indices = torch.nonzero(binary_tensor).cpu().float()
+    binary_array = binary_tensor.cpu().numpy()
+    indices = np.argwhere(binary_array)
     # Normalize z coordinates if needed (commented out)
     # z_coords = indices[:, 2]
     # norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
@@ -105,13 +107,14 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     # Create a PointCloud object
     pcd = o3d.geometry.PointCloud()
     # Convert indices to a NumPy array
-    indices_numpy = indices.numpy()
-    ind = indices_numpy[0]
-    print(f"indices shape: {indices_numpy.shape}")
-    print(f"ind shape: {ind.shape}")
+    #indices_numpy = indices.numpy()
+    #ind = indices_numpy[0]
+    #print(f"indices shape: {indices_numpy.shape}")
+    #print(f"ind shape: {ind.shape}")
     
     # Set points in the PointCloud
-    pcd.points = o3d.utility.Vector3dVector(indices_numpy)
+    pcd.points = o3d.utility.Vector3dVector(indices.astype(np.float64))
+    #pcd.points = o3d.utility.Vector3dVector(indices_numpy)
     # Optionally set colors (commented out)
     # pcd.colors = o3d.utility.Vector3dVector(colors)
     
