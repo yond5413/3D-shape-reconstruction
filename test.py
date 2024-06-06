@@ -98,7 +98,15 @@ def test(model,test_loader,configs):
 def create_voxel_grid(binary_tensor, voxel_size=1.0):
     #indices = torch.nonzero(binary_tensor).cpu().float()
     binary_array = binary_tensor.cpu().numpy()
+    ################################
+    # Check if all elements are either 0 or 1
+    is_binary = np.all((binary_tensor == 0) | (binary_tensor == 1))
+
+    print("Is the tensor binary (method 2)?", is_binary)
+    ################################
+
     indices = np.argwhere(binary_array)
+    
     # Normalize z coordinates if needed (commented out)
     # z_coords = indices[:, 2]
     # norm_z = (z_coords - z_coords.min()) / (z_coords.max() - z_coords.min())
@@ -111,6 +119,7 @@ def create_voxel_grid(binary_tensor, voxel_size=1.0):
     #ind = indices_numpy[0]
     #print(f"indices shape: {indices_numpy.shape}")
     #print(f"ind shape: {ind.shape}")
+    
     print(f'shape"{binary_array.shape}')
     print(f'foo shape"{binary_array[0].shape}')
     print(f'indices shape"{indices.shape}')
