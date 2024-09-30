@@ -13,6 +13,7 @@ from train import train
 from test import Eval
 from shapenet_loading import ShapeNetDataset
 from Shapenet_partial_loading import ShapeNetDataset_partial
+from display import Display
 ########
 from torch.utils.data import DataLoader
 import torchvision
@@ -110,14 +111,7 @@ def get_dataloaders(args):
 #########
 ## rn batch_size: 28 with 4 gpus using data parallel seems fine
 if __name__ == "__main__":
-    #cudnn_path = "/opt/conda/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_cnn_infer.so.8"
-    #cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8"
-    #cudnn_path = "/usr/local/cuda-12.1/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8.9.4"
-    #os.environ["CUDNN_LIBRARY_PATH"] = cudnn_path
-    #os.environ["LD_LIBRARY_PATH"] = f"{os.path.dirname(cudnn_path)}:{os.environ.get('LD_LIBRARY_PATH', '')}"
-    # Now you can check the cuDNN version
-    #print("cuDNN version:", torch.backends.cudnn.version())
-    #### changing the enviornment variable prior to traininig loop to help loss
+    
     
     parser = argparse.ArgumentParser(description='3D reconstruction')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
@@ -131,7 +125,7 @@ if __name__ == "__main__":
     parser.add_argument('--batch_size', default =8,type = int ,help = "number of epochs" )
     parser.add_argument('--dataset_partition', default =(1/12),type = float ,help = "amount of training data used")
     parser.add_argument('--train',default=False,type=bool,help="Training")
-    parser.add_argument('--test',default=True,type=bool,help="Test")
+    parser.add_argument('--test',default=False,type=bool,help="Test")
     
     args = parser.parse_args()
     ## batch-size 20 and num-worker 3 seems to be optimal for performance for speed 
@@ -150,7 +144,6 @@ if __name__ == "__main__":
         model_state_dict = checkpoint['model_state_dict']
         model.load_state_dict(model_state_dict)
         print("Done loading!!!!")
-    
     model.to(device)
     opt = optimizer_selection(model,args.opt,args.lr)
     ##################################
@@ -162,5 +155,8 @@ if __name__ == "__main__":
     if args.test and (not args.new_model):
         print("Time for testing!!!")
         Eval(model,test_loader,args)
+    else:
+        print("Getting best results")
+        Display()
     ## when training new model batch size 20 was the limit
     ## for testing 12 seemed okay
